@@ -1,5 +1,7 @@
 package ch.hepia.it.cffPathFinder.data;
 
+import ch.hepia.it.cffPathFinder.backend.Edge;
+import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Stop;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,36 +17,62 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLTools {
+public abstract class XMLTools {
 
-	public static List<Stop> getStops (String path) throws ParserConfigurationException, IOException, SAXException {
-		ArrayList<Stop> stops = new ArrayList<>();
+	public static Graph parse (String path) throws ParserConfigurationException, IOException, SAXException {
+		Graph g = new Graph();
+		List<Stop> stops = new ArrayList<>();
 		File input = new File(path);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(input);
 		doc.getDocumentElement().normalize();
-		System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-
-
 		NodeList stopsList = doc.getElementsByTagName("ville");
+		NodeList edgesList = doc.getElementsByTagName("liaison");
 
 		for (int i = 0; i < stopsList.getLength(); i++) {
 			Node n = stopsList.item(i);
 
 			if (n.getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) n;
-				String name = element.getElementsByTagName("nom").item(0).getTextContent();
-				name = name.substring(1, name.length() - 1);
-				String xString = element.getElementsByTagName("longitude").item(0).getTextContent();
-				xString = xString.substring(1, xString.length() - 1);
+				String name = element.getElementsByTagName("nom").item(0).getTextContent().trim();
+				String xString = element.getElementsByTagName("longitude").item(0).getTextContent().trim();
 				int x = Integer.valueOf(xString);
-				String yString = element.getElementsByTagName("latitude").item(0).getTextContent();
-				yString = yString.substring(1, yString.length() - 1);
+				String yString = element.getElementsByTagName("latitude").item(0).getTextContent().trim();
 				int y = Integer.valueOf(xString);
 				stops.add(new Stop(name, x, y));
 			}
 		}
-		return stops;
+
+		for (int i = 0; i < edgesList.getLength(); i++) {
+			Node n = edgesList.item(i);
+			if (n.getNodeType() == Node.ELEMENT_NODE) {
+				Element element = (Element) n;
+				String v1 = element.getElementsByTagName("vil_1").item(0).getTextContent().trim();
+				String v2 = element.getElementsByTagName("vil_2").item(0).getTextContent().trim();
+				String costString = element.getElementsByTagName("temps").item(0).getTextContent().trim();
+				int cost = Integer.valueOf(costString);
+				Stop s1 = findStop(stops, v1);
+				Stop s2 = findStop(stops, v2);
+
+				if (s1 != null && s2 != null) {
+					Edge e = new Edge(s1, s2, cost);
+					g.addToGraph(e);
+				} else {
+					System.err.println("Couldn't find " + v1 + " or " + v2);
+				}
+			}
+		}
+		return g;
+	}
+
+	private static Stop findStop (List<Stop> stops, String name) {
+		//should use dichotomy if we put a sortedLists
+		for (Stop st : stops) {
+			if (st.getName().equals(name)) {
+				return st;
+			}
+		}
+		return null;
 	}
 }
