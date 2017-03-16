@@ -1,6 +1,6 @@
 package ch.hepia.it.cffPathFinder.data;
 
-import ch.hepia.it.cffPathFinder.geo.Stop;
+import ch.hepia.it.cffPathFinder.backend.Stop;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parser {
+public class XMLTools {
 
 	public static List<Stop> getStops (String path) throws ParserConfigurationException, IOException, SAXException {
 		ArrayList<Stop> stops = new ArrayList<>();

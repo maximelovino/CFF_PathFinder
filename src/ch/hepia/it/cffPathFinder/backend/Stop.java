@@ -1,4 +1,4 @@
-package ch.hepia.it.cffPathFinder.geo;
+package ch.hepia.it.cffPathFinder.backend;
 
 public class Stop {
 	private final String name;
