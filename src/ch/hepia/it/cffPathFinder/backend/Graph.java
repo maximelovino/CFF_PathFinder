@@ -1,6 +1,7 @@
 package ch.hepia.it.cffPathFinder.backend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Graph {
@@ -33,7 +34,34 @@ public class Graph {
 	}
 
 	public boolean isConnex () {
+		//{Passed, tested}
+		Map<Stop, Boolean[]> checks = new HashMap<>();
+
+		for (Vertex v : vertices) {
+			checks.put(v.getStop(), new Boolean[]{false, false});
+		}
+
+		Stop s;
+		while ((s = getNextPointToCheck(checks)) != null) {
+			checks.get(s)[0] = true;
+			checks.get(s)[1] = true;
+			List<Edge> edges = edgesFromStop(s);
+			for (Edge e : edges) {
+				checks.get(e.getOtherStop(s))[0] = true;
+			}
+		}
+
 		return false;
+	}
+
+	private Stop getNextPointToCheck (Map<Stop, Boolean[]> map) {
+		for (Stop s : map.keySet()) {
+			Boolean[] vals = map.get(s);
+			if (vals[0] && !vals[1]) {
+				return s;
+			}
+		}
+		return null;
 	}
 
 	public List<Edge> edgesFromVertex (Vertex v) {

@@ -23,6 +23,7 @@ public class TestParser {
 		System.out.println(g);
 		try {
 			Graph gPrime = XMLTools.parse("data/villes.xml");
+			System.out.println(gPrime.isConnex());
 			System.out.println(gPrime);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
