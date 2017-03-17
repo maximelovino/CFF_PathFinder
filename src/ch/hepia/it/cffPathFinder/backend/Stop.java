@@ -10,7 +10,7 @@ public class Stop implements Comparable<Stop> {
 		this.name = name;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
-		vertex = new Vertex(this);
+		vertex = new Vertex(name);
 	}
 
 	public String getName () {

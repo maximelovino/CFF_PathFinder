@@ -1,18 +1,15 @@
 package ch.hepia.it.cffPathFinder.backend;
 
 public class Vertex {
-	private final Stop stop;
 
-	public Vertex (Stop stop) {
-		this.stop = stop;
+	private final String name;
+	
+	public Vertex(String name) {
+		this.name = name;
 	}
-
-	public Stop getStop () {
-		return stop;
-	}
-
+	
 	@Override
 	public String toString () {
-		return stop.toString();
+		return name;
 	}
 }

@@ -29,15 +29,15 @@ public class Edge {
 		return cost;
 	}
 
-	public boolean hasStop (Stop s) {
-		return v1.getStop().equals(s) || v2.getStop().equals(s);
+	public boolean hasVertex (Vertex v) {
+		return v1.equals(v) || v2.equals(v);
 	}
 
-	public Stop getOtherStop (Stop firstStop) {
-		if (v1.getStop().equals(firstStop)) {
-			return v2.getStop();
-		} else if (v2.getStop().equals(firstStop)) {
-			return v1.getStop();
+	public Vertex getOtherVertex (Vertex firstV) {
+		if (v1.equals(firstV)) {
+			return v2;
+		} else if (v2.equals(firstV)) {
+			return v1;
 		} else {
 			return null;
 		}
