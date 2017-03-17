@@ -29,6 +29,20 @@ public class Edge {
 		return cost;
 	}
 
+	public boolean hasStop (Stop s) {
+		return v1.getStop().equals(s) || v2.getStop().equals(s);
+	}
+
+	public Stop getOtherStop (Stop firstStop) {
+		if (v1.getStop().equals(firstStop)) {
+			return v2.getStop();
+		} else if (v2.getStop().equals(firstStop)) {
+			return v1.getStop();
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	public String toString () {
 		return "(" + v1.toString() + " --" + String.valueOf(cost) + "--> " + v2.toString() + ")";

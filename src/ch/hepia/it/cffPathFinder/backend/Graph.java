@@ -2,6 +2,7 @@ package ch.hepia.it.cffPathFinder.backend;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Graph {
 	private final List<Edge> edges;
@@ -30,6 +31,19 @@ public class Graph {
 		if (!this.vertices.contains(edge.getV2())) {
 			this.vertices.add(edge.getV2());
 		}
+	}
+
+	public boolean isConnex () {
+		return false;
+	}
+
+	public List<Edge> edgesFromStop (Stop s) {
+		List<Edge> result = new ArrayList<>();
+		for (Edge e : edges) {
+			if (e.hasStop(s))
+				result.add(e);
+		}
+		return result;
 	}
 
 	public List<Edge> getEdges () {
