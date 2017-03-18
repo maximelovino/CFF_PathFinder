@@ -1,5 +1,6 @@
 package ch.hepia.it.cffPathFinder.tests;
 
+import ch.hepia.it.cffPathFinder.backend.Dijkstra;
 import ch.hepia.it.cffPathFinder.backend.Edge;
 import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Stop;
@@ -26,6 +27,7 @@ public class TestParser {
 			Graph gPrime = XMLTools.parse("data/villes.xml");
 			System.out.println(gPrime.isConnex()); //true
 			System.out.println(gPrime);
+			System.out.println(Dijkstra.getInstance().shortestPath(gPrime, gPrime.getVertex("Geneve"), gPrime.getVertex("Berne")));
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

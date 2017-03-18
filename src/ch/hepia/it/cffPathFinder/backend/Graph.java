@@ -83,6 +83,13 @@ public class Graph {
 		return result;
 	}
 
+	public Vertex getVertex (String name) {
+		for (Vertex v : vertices) {
+			if (v.getName().equals(name)) return v;
+		}
+		return null;
+	}
+
 	public List<Edge> getEdges () {
 		return edges;
 	}

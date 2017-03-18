@@ -19,4 +19,8 @@ public class Path {
 		this.path.add(v);
 	}
 
+	@Override
+	public String toString () {
+		return path.toString();
+	}
 }

@@ -1,9 +1,6 @@
 package ch.hepia.it.cffPathFinder.backend;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class Dijkstra implements PathFinder {
 	private static Dijkstra instance = new Dijkstra();
@@ -20,7 +17,7 @@ public class Dijkstra implements PathFinder {
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		distances = new HashMap<>();
 		precendence = new HashMap<>();
-		Queue<Vertex> queue = new PriorityQueue<>((Vertex o1, Vertex o2)->Integer.compare(distances.get(o1), distances.get(o2)));
+		Queue<Vertex> queue = new PriorityQueue<>(Comparator.comparing(o -> distances.get(o)));
 		for (Vertex v : g.getVertices()) {
 			distances.put(v, Integer.MAX_VALUE);
 			precendence.put(v, null);
@@ -41,6 +38,8 @@ public class Dijkstra implements PathFinder {
 				if(alt < distances.get(u)) {
 					distances.put(u, alt);
 					precendence.put(u, v);
+					queue.remove(u);
+					queue.add(u);
 				}
 			}
 		}
