@@ -34,8 +34,11 @@ public class Graph {
 		}
 	}
 
+	/**
+	 * @return If the graph is connex or not
+	 */
 	public boolean isConnex () {
-		//{Passed, tested}
+		//{Reachable, tested}
 		Map<Vertex, Boolean[]> checks = new HashMap<>();
 
 		for (Vertex v : vertices) {
@@ -43,8 +46,10 @@ public class Graph {
 		}
 
 		Vertex v;
+		//we set the first one as reachable, so we can continue
+		checks.get(vertices.get(0))[0] = true;
+
 		while ((v = getNextPointToCheck(checks)) != null) {
-			checks.get(v)[0] = true;
 			checks.get(v)[1] = true;
 			List<Edge> edges = edgesFromVertex(v);
 			for (Edge e : edges) {
@@ -52,7 +57,11 @@ public class Graph {
 			}
 		}
 
-		return false;
+		for (Boolean[] vals : checks.values()) {
+			if (!vals[0]) return false;
+		}
+
+		return true;
 	}
 
 	private Vertex getNextPointToCheck (Map<Vertex, Boolean[]> map) {

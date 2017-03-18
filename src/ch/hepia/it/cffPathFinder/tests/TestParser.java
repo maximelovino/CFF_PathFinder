@@ -14,16 +14,17 @@ public class TestParser {
 		Stop s1 = new Stop("Lausanne", 10, 10);
 		Stop s2 = new Stop("Zurich", 10, 10);
 		Stop s3 = new Stop("Geneva", 10, 10);
+		Stop s4 = new Stop("Bern", 10, 10);
 
 		Edge e1 = new Edge(s1, s2, 30);
-		Edge e2 = new Edge(s3, s2, 70);
-		Edge e3 = new Edge(s3, s1, 80);
+		Edge e2 = new Edge(s3, s4, 70);
 
-		Graph g = new Graph(e1, e2, e3);
+		Graph g = new Graph(e1, e2);
+		System.out.println(g.isConnex()); //false
 		System.out.println(g);
 		try {
 			Graph gPrime = XMLTools.parse("data/villes.xml");
-			System.out.println(gPrime.isConnex());
+			System.out.println(gPrime.isConnex()); //true
 			System.out.println(gPrime);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
