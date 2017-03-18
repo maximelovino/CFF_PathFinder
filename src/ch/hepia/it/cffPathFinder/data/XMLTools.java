@@ -39,7 +39,7 @@ public abstract class XMLTools {
 				String xString = element.getElementsByTagName("longitude").item(0).getTextContent().trim();
 				int x = Integer.valueOf(xString);
 				String yString = element.getElementsByTagName("latitude").item(0).getTextContent().trim();
-				int y = Integer.valueOf(xString);
+				int y = Integer.valueOf(yString);
 				stops.add(new Stop(name, x, y));
 			}
 		}
