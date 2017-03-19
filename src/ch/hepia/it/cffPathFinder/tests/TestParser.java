@@ -27,7 +27,7 @@ public class TestParser {
 			Graph gPrime = XMLTools.parse("data/villes.xml");
 			System.out.println(gPrime.isConnex()); //true
 			System.out.println(gPrime);
-			System.out.println(Dijkstra.getInstance().shortestPath(gPrime, gPrime.getVertex("Geneve"), gPrime.getVertex("Berne")));
+			System.out.println(Dijkstra.getInstance().shortestPath(gPrime, gPrime.getVertex("Andermatt"), gPrime.getVertex("Zurich")));
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

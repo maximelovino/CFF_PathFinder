@@ -25,6 +25,8 @@ public class Dijkstra implements PathFinder {
 		}
 		//distance from source to source = 0
 		distances.put(v1, 0);
+		queue.remove(v1);
+		queue.add(v1);
 		
 		while(!queue.isEmpty()) {
 			Vertex v = queue.poll();
