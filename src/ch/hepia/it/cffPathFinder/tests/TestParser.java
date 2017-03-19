@@ -28,6 +28,8 @@ public class TestParser {
 			System.out.println(gPrime.isConnex()); //true
 			System.out.println(gPrime);
 			System.out.println(Dijkstra.getInstance().shortestPath(gPrime, gPrime.getVertex("Andermatt"), gPrime.getVertex("Zurich")));
+			System.out.println(Dijkstra.getInstance().getDistances());
+			System.out.println(Dijkstra.getInstance().getPrecedence());
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -1,9 +1,6 @@
 package ch.hepia.it.cffPathFinder.backend;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graph {
 	private final List<Edge> edges;
@@ -101,5 +98,52 @@ public class Graph {
 	@Override
 	public String toString () {
 		return edges.toString();
+	}
+
+	public String adjacencyListString () {
+		String out = "";
+		for (Vertex v : vertices) {
+			out += v.getName();
+			List<Edge> edges = edgesFromVertex(v);
+			for (Edge e : edges) {
+				out += " [" + e.getOtherVertex(v).getName() + ":" + String.valueOf(e.getCost()) + "]";
+			}
+			out += "\n";
+		}
+		return out;
+	}
+
+	public String verticesToString () {
+		String out = "";
+		for (int i = 0; i < vertices.size(); i++) {
+			out += "[" + String.valueOf(i) + ":" + vertices.get(i).getName() + "]";
+			if (i != vertices.size() - 1) {
+				out += " ";
+			}
+		}
+		return out;
+	}
+
+	public String adjacencyMatrixString () {
+		Map<Vertex, Integer> inverseCorrespondance = new HashMap<>();
+
+		for (int i = 0; i < vertices.size(); i++) {
+			inverseCorrespondance.put(vertices.get(i), i);
+		}
+
+		String out = "";
+		for (Vertex v : vertices) {
+			int[] values = new int[vertices.size()];
+			Arrays.fill(values, Integer.MAX_VALUE);
+			values[inverseCorrespondance.get(v)] = 0;
+			for (Edge e : edgesFromVertex(v)) {
+				values[inverseCorrespondance.get(e.getOtherVertex(v))] = e.getCost();
+			}
+			for (int i = 0; i < values.length; i++) {
+				out += values[i] == Integer.MAX_VALUE ? "inf" : String.valueOf(values[i]);
+				out += i != values.length - 1 ? "\t" : "\n";
+			}
+		}
+		return out;
 	}
 }

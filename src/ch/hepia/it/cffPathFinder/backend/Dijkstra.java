@@ -5,7 +5,7 @@ import java.util.*;
 public class Dijkstra implements PathFinder {
 	private static Dijkstra instance = new Dijkstra();
 	private Map<Vertex, Integer> distances;
-	private Map<Vertex, Vertex> precendence;
+	private Map<Vertex, Vertex> precedence;
 	
 	private Dijkstra () {
 	}
@@ -16,11 +16,11 @@ public class Dijkstra implements PathFinder {
 
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		distances = new HashMap<>();
-		precendence = new HashMap<>();
+		precedence = new HashMap<>();
 		Queue<Vertex> queue = new PriorityQueue<>(Comparator.comparing(o -> distances.get(o)));
 		for (Vertex v : g.getVertices()) {
 			distances.put(v, Integer.MAX_VALUE);
-			precendence.put(v, null);
+			precedence.put(v, null);
 			queue.add(v);
 		}
 		//distance from source to source = 0
@@ -39,7 +39,7 @@ public class Dijkstra implements PathFinder {
 				int alt = distances.get(v) + e.getCost();
 				if(alt < distances.get(u)) {
 					distances.put(u, alt);
-					precendence.put(u, v);
+					precedence.put(u, v);
 					queue.remove(u);
 					queue.add(u);
 				}
@@ -47,11 +47,19 @@ public class Dijkstra implements PathFinder {
 		}
 		
 		Path p = new Path();
-		while(precendence.get(v2) != null) {
+		while (precedence.get(v2) != null) {
 			p.insertAtBeginning(v2);
-			v2 = precendence.get(v2);
+			v2 = precedence.get(v2);
 		}
 		p.insertAtBeginning(v2);
 		return p;
+	}
+
+	public Map<Vertex, Integer> getDistances () {
+		return distances;
+	}
+
+	public Map<Vertex, Vertex> getPrecedence () {
+		return precedence;
 	}
 }
