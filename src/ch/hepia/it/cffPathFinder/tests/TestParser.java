@@ -16,10 +16,6 @@ public class TestParser {
 
 		Edge e1 = new Edge(s1, s2, 30);
 		Edge e2 = new Edge(s3, s4, 70);
-
-		Graph g = new Graph(e1, e2);
-		System.out.println(g.isConnex()); //false
-		System.out.println(g);
 		try {
 			Graph gPrime = XMLTools.parse("data/villes.xml");
 			System.out.println(gPrime.isConnex()); //true

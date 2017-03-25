@@ -11,23 +11,29 @@ public class Graph {
 		vertices = new ArrayList<>();
 	}
 
-	public Graph (Edge... edges) {
-		this();
-		for (Edge edge : edges) {
-			addToGraph(edge);
+	public void addVertex (Vertex v) {
+		if (!vertices.contains(v)) {
+			vertices.add(v);
 		}
 	}
 
-	public void addToGraph (Edge edge) {
-		if (this.edges.contains(edge)) {
-			return;
+	public void addEdge (String city1, String city2, int cost) {
+		Vertex v1 = null;
+		Vertex v2 = null;
+		for (Vertex v : vertices) {
+			if (v.getName().equals(city1)) {
+				v1 = v;
+			}
+			if (v.getName().equals(city2)) {
+				v2 = v;
+			}
+			if (v1 != null && v2 != null) break;
 		}
-		this.edges.add(edge);
-		if (!this.vertices.contains(edge.getV1())) {
-			this.vertices.add(edge.getV1());
-		}
-		if (!this.vertices.contains(edge.getV2())) {
-			this.vertices.add(edge.getV2());
+		if (v1 != null && v2 != null) {
+			Edge e = new Edge(v1, v2, cost);
+			edges.add(e);
+		} else {
+			throw new RuntimeException((v1 == null ? city1 : city2) + (v2 == null ? " and " + city2 : "") + " not in the list of vertices");
 		}
 	}
 
