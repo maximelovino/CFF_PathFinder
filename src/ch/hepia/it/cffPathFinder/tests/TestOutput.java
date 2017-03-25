@@ -5,6 +5,7 @@ import ch.hepia.it.cffPathFinder.data.XMLTools;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 public class TestOutput {
@@ -16,6 +17,12 @@ public class TestOutput {
 		System.out.println(g.adjacencyListString());
 		System.out.println("-----------MATRIX-----------");
 		System.out.println(g.adjacencyMatrixString());
+		System.out.println("-----------XML Output-----------");
+		try {
+			XMLTools.writeToXML("data/out.xml", g);
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
 
 	}
 }

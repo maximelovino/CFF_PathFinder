@@ -11,12 +11,6 @@ public class Edge {
 		this.cost = cost;
 	}
 
-	public Edge (Stop s1, Stop s2, int cost) {
-		this.v1 = s1.getVertex();
-		this.v2 = s2.getVertex();
-		this.cost = cost;
-	}
-
 	public Vertex getV1 () {
 		return v1;
 	}

@@ -45,8 +45,9 @@ public class Dijkstra implements PathFinder {
 				}
 			}
 		}
-		
+
 		Path p = new Path();
+		p.setCost(distances.get(v2));
 		while (precedence.get(v2) != null) {
 			p.insertAtBeginning(v2);
 			v2 = precedence.get(v2);

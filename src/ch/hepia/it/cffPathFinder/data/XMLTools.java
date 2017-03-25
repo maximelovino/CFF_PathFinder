@@ -3,6 +3,7 @@ package ch.hepia.it.cffPathFinder.data;
 import ch.hepia.it.cffPathFinder.backend.Edge;
 import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Stop;
+import ch.hepia.it.cffPathFinder.backend.Vertex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,6 +13,13 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.font.TransformAttribute;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,5 +82,62 @@ public abstract class XMLTools {
 			}
 		}
 		return null;
+	}
+
+	public static void writeToXML (String xmlFilePath, Graph g) throws ParserConfigurationException, TransformerException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbFactory.newDocumentBuilder();
+
+		Document doc = db.newDocument();
+
+		//Root element <reseau>...</reseau>
+		Element rootElement = doc.createElement("reseau");
+		doc.appendChild(rootElement);
+
+		//Title element <titre>CFF</titre>
+		Element titleElement = doc.createElement("titre");
+		titleElement.appendChild(doc.createTextNode("CFF"));
+		rootElement.appendChild(titleElement);
+
+		List<Vertex> vertices = g.getVertices();
+
+		for (Vertex v : vertices) {
+			if (v instanceof Stop) {
+				Stop st = (Stop) v;
+				Element city = doc.createElement("ville");
+				Element name = doc.createElement("nom");
+				name.appendChild(doc.createTextNode(st.getName()));
+				Element longitude = doc.createElement("longitude");
+				longitude.appendChild(doc.createTextNode(String.valueOf(st.getxCoord())));
+				Element latitude = doc.createElement("latitude");
+				latitude.appendChild(doc.createTextNode(String.valueOf(st.getyCoord())));
+				city.appendChild(name);
+				city.appendChild(longitude);
+				city.appendChild(latitude);
+				rootElement.appendChild(city);
+			}
+		}
+
+		List<Edge> edges = g.getEdges();
+
+		for (Edge e : edges) {
+			Element link = doc.createElement("liaison");
+			Element city1 = doc.createElement("vil_1");
+			city1.appendChild(doc.createTextNode(e.getV1().getName()));
+			Element city2 = doc.createElement("vil_2");
+			city2.appendChild(doc.createTextNode(e.getV2().getName()));
+			Element cost = doc.createElement("temps");
+			cost.appendChild(doc.createTextNode(String.valueOf(e.getCost())));
+			link.appendChild(city1);
+			link.appendChild(city2);
+			link.appendChild(cost);
+			rootElement.appendChild(link);
+		}
+
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StreamResult result = new StreamResult(new File(xmlFilePath));
+		transformer.transform(source, result);
 	}
 }
