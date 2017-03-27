@@ -6,9 +6,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hepia.it.cffPathFinder.backend.Graph;
+import ch.hepia.it.cffPathFinder.backend.Stop;
+import ch.hepia.it.cffPathFinder.backend.Vertex;
+
 public class MapReader {
 
-	public static List<Float[]> readMap(String file) {
+	public static List<Float[]> readMap(String file, Graph g) {
 		List<Float[]> points = new ArrayList<>();
 		float maxx = 1, maxy = 1;
 		float minx = Float.POSITIVE_INFINITY, miny = Float.POSITIVE_INFINITY;
@@ -34,6 +38,15 @@ public class MapReader {
 			p[1] -= miny;
 			p[0] /= (maxx-minx);
 			p[1] /= (maxy-miny);
+		}
+		
+		for (Vertex v : g.getVertices()) {
+			Stop s = (Stop)v;
+			s.setxCoord(s.getxCoord()-minx);
+			s.setyCoord(s.getyCoord()-miny);
+
+			s.setxCoord(s.getxCoord()/(maxx-minx));
+			s.setyCoord(s.getyCoord()/(maxy-miny));
 		}
 		return points;
 	}

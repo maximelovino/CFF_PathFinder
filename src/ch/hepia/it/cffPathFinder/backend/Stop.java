@@ -1,8 +1,8 @@
 package ch.hepia.it.cffPathFinder.backend;
 
 public class Stop extends Vertex implements Comparable<Stop> {
-	private final int xCoord;
-	private final int yCoord;
+	private float xCoord;
+	private float yCoord;
 
 	public Stop (String name, int xCoord, int yCoord) {
 		super(name);
@@ -11,11 +11,11 @@ public class Stop extends Vertex implements Comparable<Stop> {
 	}
 
 
-	public int getxCoord () {
+	public float getxCoord () {
 		return xCoord;
 	}
 
-	public int getyCoord () {
+	public float getyCoord () {
 		return yCoord;
 	}
 
@@ -37,5 +37,15 @@ public class Stop extends Vertex implements Comparable<Stop> {
 	@Override
 	public int compareTo (Stop o) {
 		return this.getName().compareTo(o.getName());
+	}
+
+
+	public void setxCoord(float xCoord) {
+		this.xCoord = xCoord;
+	}
+
+
+	public void setyCoord(float yCoord) {
+		this.yCoord = yCoord;
 	}
 }
