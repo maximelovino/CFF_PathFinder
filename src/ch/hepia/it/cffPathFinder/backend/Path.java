@@ -31,6 +31,10 @@ public class Path {
 
 	@Override
 	public String toString () {
-		return path.toString();
+		String out = "[";
+		for (int i = 0; i < path.size(); i++) {
+			out += path.get(i).toString() + (i != path.size() - 1 ? ":" : "]");
+		}
+		return out;
 	}
 }

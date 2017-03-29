@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Dijkstra implements PathFinder {
 	private static Dijkstra instance = new Dijkstra();
-	private Map<Vertex, Integer> distances;
-	private Map<Vertex, Vertex> precedence;
+	private static Map<Vertex, Integer> distances;
+	private static Map<Vertex, Vertex> precedence;
 	
 	private Dijkstra () {
 	}
@@ -15,6 +15,20 @@ public class Dijkstra implements PathFinder {
 	}
 
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
+		shortestPath(g, v1, NO_VIEW);
+
+		Path p = new Path();
+		p.setCost(distances.get(v2));
+		while (precedence.get(v2) != null) {
+			p.insertAtBeginning(v2);
+			v2 = precedence.get(v2);
+		}
+		p.insertAtBeginning(v2);
+		return p;
+	}
+
+	@Override
+	public void shortestPath (Graph g, Vertex v1, int viewType) {
 		distances = new HashMap<>();
 		precedence = new HashMap<>();
 		Queue<Vertex> queue = new PriorityQueue<>(Comparator.comparing(o -> distances.get(o)));
@@ -27,17 +41,14 @@ public class Dijkstra implements PathFinder {
 		distances.put(v1, 0);
 		queue.remove(v1);
 		queue.add(v1);
-		
-		while(!queue.isEmpty()) {
+
+		while (!queue.isEmpty()) {
 			Vertex v = queue.poll();
-			if(v == v2) {
-				break;
-			}
-			
+
 			for (Edge e : g.edgesFromVertex(v)) {
 				Vertex u = e.getOtherVertex(v);
 				int alt = distances.get(v) + e.getCost();
-				if(alt < distances.get(u)) {
+				if (alt < distances.get(u)) {
 					distances.put(u, alt);
 					precedence.put(u, v);
 					queue.remove(u);
@@ -45,15 +56,6 @@ public class Dijkstra implements PathFinder {
 				}
 			}
 		}
-
-		Path p = new Path();
-		p.setCost(distances.get(v2));
-		while (precedence.get(v2) != null) {
-			p.insertAtBeginning(v2);
-			v2 = precedence.get(v2);
-		}
-		p.insertAtBeginning(v2);
-		return p;
 	}
 
 	public Map<Vertex, Integer> getDistances () {

@@ -15,4 +15,9 @@ public class AntsSolver implements PathFinder {
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		return null;
 	}
+
+	@Override
+	public void shortestPath (Graph g, Vertex v1, int viewType) {
+
+	}
 }
