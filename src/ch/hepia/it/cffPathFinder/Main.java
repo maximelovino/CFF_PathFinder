@@ -1,5 +1,6 @@
 package ch.hepia.it.cffPathFinder;
 
+import ch.hepia.it.cffPathFinder.backend.Dijkstra;
 import ch.hepia.it.cffPathFinder.backend.Floyd;
 import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Path;
@@ -179,7 +180,8 @@ public class Main {
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
 					// format de sortie -> à générer avec votre code
-					System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] $[Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
+					//System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] $[Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
+					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), Dijkstra.COST_VIEW);
 					break;
 				case 9:
 					System.err.println("Ville d'origine:");
@@ -195,7 +197,9 @@ public class Main {
 					System.err.print("Distance: ");
 					// format de sortie -> à générer avec votre code
 					// imprimer "inf" à la place Integer.MAX_VALUE
-					System.out.println(267); // résultat pour Bale à St.-Moritz
+					//System.out.println(267); // résultat pour Bale à St.-Moritz
+					p = Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), graph.getVertex(str2));
+					System.out.println(p.getCost());
 					break;
 				case 11:
 					System.err.println("Ville d'origine:");
@@ -204,7 +208,9 @@ public class Main {
 					str2 = in.next();
 					System.err.print("Parcours: ");
 					// format de sortie -> à générer avec votre code
-					System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
+					//System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
+					p = Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), graph.getVertex(str2));
+					System.out.println(p);
 					break;
 				case 12:
 					System.err.println("Nom de la ville:");

@@ -1,5 +1,6 @@
 package ch.hepia.it.cffPathFinder.backend;
 
+
 import java.util.*;
 
 public class Dijkstra implements PathFinder {
@@ -55,6 +56,25 @@ public class Dijkstra implements PathFinder {
 					queue.add(u);
 				}
 			}
+		}
+
+		switch (viewType) {
+			case COST_VIEW:
+				for (Vertex v : g.getVertices()) {
+					System.out.print("[" + v.toString() + ":" + distances.get(v) + "] ");
+				}
+				System.out.println();
+				break;
+			case PRECEDENCE_VIEW:
+				for (Vertex v : g.getVertices()) {
+					if (!v.equals(v1)) {
+						System.out.print("[" + precedence.get(v).toString() + "<-" + v.toString() + "]");
+					}
+				}
+				System.out.println();
+				break;
+			default:
+				break;
 		}
 	}
 

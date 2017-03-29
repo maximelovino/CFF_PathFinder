@@ -6,8 +6,6 @@ import java.util.Map;
 
 public class Floyd implements PathFinder {
 	private static Floyd instance = new Floyd();
-	public final static int COST_VIEW = 1;
-	public final static int PRECEDENCE_VIEW = 2;
 	private static int[][] distances;
 	private static Vertex[][] precedences;
 	private static Map<Vertex, Integer> inverseCorrespondance;
