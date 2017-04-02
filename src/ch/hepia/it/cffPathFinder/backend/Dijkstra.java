@@ -68,7 +68,7 @@ public class Dijkstra implements PathFinder {
 			case PRECEDENCE_VIEW:
 				for (Vertex v : g.getVertices()) {
 					if (!v.equals(v1)) {
-						System.out.print("[" + precedence.get(v).toString() + "<-" + v.toString() + "]");
+						System.out.print("[" + precedence.get(v).toString() + "<-" + v.toString() + "] ");
 					}
 				}
 				System.out.println();

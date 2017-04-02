@@ -17,23 +17,56 @@ public class Graph {
 		}
 	}
 
-	public void addEdge (String city1, String city2, int cost) {
-		Vertex v1 = null;
-		Vertex v2 = null;
-		for (Vertex v : vertices) {
-			if (v.getName().equals(city1)) {
-				v1 = v;
-			}
-			if (v.getName().equals(city2)) {
-				v2 = v;
-			}
-			if (v1 != null && v2 != null) break;
+	public void addVertex (String name) {
+		if (this.getVertex(name) == null) {
+			addVertex(new Vertex(name));
+		} else {
+			throw new RuntimeException("The vertex exists already");
 		}
+	}
+
+	public void removeVertex (String city) {
+		Vertex v = this.getVertex(city);
+
+		if (v != null) {
+			for (Edge e : this.edgesFromVertex(v)) {
+				this.edges.remove(e);
+			}
+		} else {
+			throw new RuntimeException("Vertex " + city + " doesn't exist");
+		}
+	}
+
+	public void addEdge (String city1, String city2, int cost) {
+		Vertex v1 = this.getVertex(city1);
+		Vertex v2 = this.getVertex(city2);
+
 		if (v1 != null && v2 != null) {
 			Edge e = new Edge(v1, v2, cost);
 			edges.add(e);
 		} else {
 			throw new RuntimeException((v1 == null ? city1 : city2) + (v2 == null ? " and " + city2 : "") + " not in the list of vertices");
+		}
+	}
+
+	public void removeEdge (String city1, String city2) {
+		Vertex v1 = this.getVertex(city1);
+		Vertex v2 = this.getVertex(city2);
+		boolean ok = false;
+
+		if (v1 != null && v2 != null) {
+			for (Edge e : this.edgesFromVertex(v1)) {
+				if (e.getOtherVertex(v1).equals(v2)) {
+					this.edges.remove(e);
+					ok = true;
+					break;
+				}
+			}
+		} else {
+			throw new RuntimeException((v1 == null ? city1 : city2) + (v2 == null ? " and " + city2 : "") + " not in the list of vertices");
+		}
+		if (!ok) {
+			throw new RuntimeException("No edge was found");
 		}
 	}
 
