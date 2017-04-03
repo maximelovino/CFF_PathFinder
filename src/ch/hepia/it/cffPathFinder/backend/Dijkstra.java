@@ -1,6 +1,5 @@
 package ch.hepia.it.cffPathFinder.backend;
 
-
 import java.util.*;
 
 public class Dijkstra implements PathFinder {
@@ -16,7 +15,7 @@ public class Dijkstra implements PathFinder {
 	}
 
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
-		shortestPath(g, v1, NO_VIEW);
+		shortestPath(g, v1, ViewType.NO_VIEW);
 
 		Path p = new Path();
 		p.setCost(distances.get(v2));
@@ -29,7 +28,7 @@ public class Dijkstra implements PathFinder {
 	}
 
 	@Override
-	public void shortestPath (Graph g, Vertex v1, int viewType) {
+	public void shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		distances = new HashMap<>();
 		precedence = new HashMap<>();
 		Queue<Vertex> queue = new PriorityQueue<>(Comparator.comparing(o -> distances.get(o)));

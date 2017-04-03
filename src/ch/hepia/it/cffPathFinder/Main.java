@@ -4,6 +4,7 @@ import ch.hepia.it.cffPathFinder.backend.Dijkstra;
 import ch.hepia.it.cffPathFinder.backend.Floyd;
 import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Path;
+import ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 import ch.hepia.it.cffPathFinder.data.XMLTools;
 
 import java.io.File;
@@ -81,11 +82,11 @@ public class Main {
 					break;
 				case 4:
 					// Output "inf" instead of Integer.MAX_VALUE
-					Floyd.getInstance().shortestPath(graph, null, Floyd.COST_VIEW);
+					Floyd.getInstance().shortestPath(graph, null, ViewType.COST_VIEW);
 					break;
 				case 5:
 					// Print -1 if no predecessor
-					Floyd.getInstance().shortestPath(graph, null, Floyd.PRECEDENCE_VIEW);
+					Floyd.getInstance().shortestPath(graph, null, ViewType.PRECEDENCE_VIEW);
 					break;
 				case 6:
 					System.err.println("Ville d'origine:");
@@ -108,12 +109,12 @@ public class Main {
 				case 8:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
-					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), Dijkstra.COST_VIEW);
+					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.COST_VIEW);
 					break;
 				case 9:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
-					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), Dijkstra.PRECEDENCE_VIEW);
+					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.PRECEDENCE_VIEW);
 					break;
 				case 10:
 					System.err.println("Ville d'origine:");

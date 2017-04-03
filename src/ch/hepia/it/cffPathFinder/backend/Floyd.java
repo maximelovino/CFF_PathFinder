@@ -20,7 +20,7 @@ public class Floyd implements PathFinder {
 
 	@Override
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
-		shortestPath(g, v1, NO_VIEW);
+		shortestPath(g, v1, ViewType.NO_VIEW);
 		Path p = new Path();
 		int cost = distances[inverseCorrespondance.get(v1)][inverseCorrespondance.get(v2)];
 		p.setCost(cost);
@@ -32,7 +32,7 @@ public class Floyd implements PathFinder {
 	}
 
 	@Override
-	public void shortestPath (Graph g, Vertex v1, int viewType) {
+	public void shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		inverseCorrespondance = new HashMap<>();
 		List<Vertex> vertices = g.getVertices();
 
