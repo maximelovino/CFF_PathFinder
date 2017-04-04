@@ -25,8 +25,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class with functions for parsing and exporting XML files
+ */
 public abstract class XMLTools {
 
+	/**
+	 * Function to parse the XML data file for the train network
+	 *
+	 * @param path The path of the file to parse
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @return The Graph of the network
+	 */
 	public static Graph parse (String path) throws ParserConfigurationException, IOException, SAXException {
 		Graph g = new Graph();
 		File input = new File(path);
@@ -69,7 +81,15 @@ public abstract class XMLTools {
 		return g;
 	}
 
-	public static void writeToXML (String xmlFilePath, Graph g) throws ParserConfigurationException, TransformerException {
+	/**
+	 * Function to export an XML data file from our Graph
+	 *
+	 * @param xmlFilePath The path of the file to export
+	 * @param graph       The Graph we want to export
+	 * @throws ParserConfigurationException
+	 * @throws TransformerException
+	 */
+	public static void writeToXML (String xmlFilePath, Graph graph) throws ParserConfigurationException, TransformerException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbFactory.newDocumentBuilder();
 
@@ -84,7 +104,7 @@ public abstract class XMLTools {
 		titleElement.appendChild(doc.createTextNode("CFF"));
 		rootElement.appendChild(titleElement);
 
-		List<Vertex> vertices = g.getVertices();
+		List<Vertex> vertices = graph.getVertices();
 
 		for (Vertex v : vertices) {
 			if (v instanceof Stop) {
@@ -103,7 +123,7 @@ public abstract class XMLTools {
 			}
 		}
 
-		List<Edge> edges = g.getEdges();
+		List<Edge> edges = graph.getEdges();
 
 		for (Edge e : edges) {
 			Element link = doc.createElement("liaison");

@@ -3,32 +3,56 @@ package ch.hepia.it.cffPathFinder.backend;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing a Path in our Graph
+ */
 public class Path {
 
 	private List<Vertex> path;
 	private int cost;
-	
+
+	/**
+	 * Default constructor for a Path, will create an empty path of cost 0
+	 */
 	public Path() {
 		this.path = new ArrayList<>();
 		this.cost = 0;
 	}
-	
+
+	/**
+	 * Method to insert a Vertex at the beginning of the Path
+	 * @param v    The Vertex to insert
+	 */
 	public void insertAtBeginning(Vertex v) {
 		this.path.add(0, v);
 	}
-	
+
+	/**
+	 * Method to insert a Vertex at the end of the Path
+	 * @param v    The Vertex to insert
+	 */
 	public void insertAtEnd(Vertex v) {
 		this.path.add(v);
 	}
 
+	/**
+	 * Setter for the cost of the Path
+	 * @param cost    The new cost
+	 */
 	public void setCost (int cost) {
 		this.cost = cost;
 	}
 
+	/**
+	 * @return The cost of the Path
+	 */
 	public int getCost () {
 		return cost;
 	}
 
+	/**
+	 * @return String representation of the Path
+	 */
 	@Override
 	public String toString () {
 		String out = "[";
