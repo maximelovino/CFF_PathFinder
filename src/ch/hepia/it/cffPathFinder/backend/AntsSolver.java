@@ -9,9 +9,9 @@ import java.util.Map;
 public class AntsSolver implements PathFinder {
 	private static AntsSolver instance = new AntsSolver();
 	private static final int ANTS_COUNT = 100;
-	private static final int STEP_COUNT = 10000;
+	private static final int STEP_COUNT = 1000000;
 	private static final double ALPHA = 2;
-	private static final double BETA = 1;
+	private static final double BETA = 0;
 	private static final double Q = 1;
 
 	private AntsSolver() {
@@ -46,13 +46,13 @@ public class AntsSolver implements PathFinder {
 			float maxp = 0;
 			Edge m = null;
 			List<Edge> edges = g.edgesFromVertex(c);
-			System.out.println(pheromoneTrail);
 			for (Edge e : edges) {
 				if (pheromoneTrail.get(e) > maxp && !p.contains(e.getOtherVertex(c))) {
 					m = e;
 					maxp = pheromoneTrail.get(e);
 				}
 			}
+			p.setCost(p.getCost()+m.getCost());
 			c = m.getOtherVertex(c);
 		}
 		p.insertAtEnd(v2);
@@ -122,7 +122,7 @@ public class AntsSolver implements PathFinder {
 						// if the ant is at the next vertex
 					} else {
 						currentVertex = currentEdge.getOtherVertex(currentVertex);
-						ph.put(currentEdge, (float) (ph.get(currentEdge) + Q / currentEdge.getCost()));
+						ph.put(currentEdge, (float) (ph.get(currentEdge) + Q ));
 						currentEdge = null;
 						edgeProgress = 0;
 						if (currentVertex == start) {

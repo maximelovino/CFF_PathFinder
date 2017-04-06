@@ -40,8 +40,5 @@ public class TestOutput {
 		Path aco = AntsSolver.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
 		System.out.println(aco);
 		System.out.println("Cost " + aco.getCost());
-
-		System.out.println(g.edgesFromVertex(g.getVertex("Zurich")));
-
 	}
 }
