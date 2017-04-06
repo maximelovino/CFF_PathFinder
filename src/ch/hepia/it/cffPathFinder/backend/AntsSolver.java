@@ -8,11 +8,11 @@ import java.util.Map;
 
 public class AntsSolver implements PathFinder {
 	private static AntsSolver instance = new AntsSolver();
-	private static final int ANTS_COUNT = 1000;
-	private static final int STEP_COUNT = 100000;
+	private static final int ANTS_COUNT = 100;
+	private static final int STEP_COUNT = 10000;
 	private static final double ALPHA = 2;
-	private static final double BETA = 0;
-	private static final double Q = 10;
+	private static final double BETA = 1;
+	private static final double Q = 1;
 
 	private AntsSolver() {
 
@@ -41,13 +41,14 @@ public class AntsSolver implements PathFinder {
 			}
 		}
 		Vertex c = v1;
-		while(c != v2) {
+		while (c != v2) {
 			p.insertAtEnd(c);
 			float maxp = 0;
 			Edge m = null;
 			List<Edge> edges = g.edgesFromVertex(c);
+			System.out.println(pheromoneTrail);
 			for (Edge e : edges) {
-				if(pheromoneTrail.get(e) > maxp && !p.contains(e.getOtherVertex(c))) {
+				if (pheromoneTrail.get(e) > maxp && !p.contains(e.getOtherVertex(c))) {
 					m = e;
 					maxp = pheromoneTrail.get(e);
 				}
@@ -65,21 +66,23 @@ public class AntsSolver implements PathFinder {
 
 	private class Ant {
 		private List<Edge> path;
-		private List<Vertex> visited;
 		private Vertex currentVertex;
 		private Edge currentEdge;
 		private int edgeProgress;
 		private boolean arrived;
 		private final Vertex start, goal;
 
+		private List<Vertex> visited;
+
 		public Ant(Vertex v1, Vertex goal) {
 			this.currentVertex = v1;
 			this.path = new ArrayList<>();
-			this.visited = new ArrayList<>();
 			this.arrived = false;
 			this.edgeProgress = 0;
 			this.goal = goal;
 			this.start = v1;
+
+			this.visited = new ArrayList<>();
 			this.visited.add(start);
 		}
 
@@ -88,18 +91,18 @@ public class AntsSolver implements PathFinder {
 			if (!arrived) {
 				// if no edge is being traveled
 				if (currentEdge == null) {
-					currentEdge = chooseEdge(g, ph, visited);
+					currentEdge = chooseEdge(g, ph);
 					path.add(currentEdge);
-					edgeProgress++;
+					edgeProgress = 1;
 				} else {
 					// if the ant isn't at the end of the edge yet
 					if (edgeProgress < currentEdge.getCost()) {
 						edgeProgress++;
-					// if the ant is at the next vertex
+						// if the ant is at the next vertex
 					} else {
-						currentVertex = (currentVertex == currentEdge.getV1() ? currentEdge.getV2() : currentEdge.getV1());
+						currentVertex = currentEdge.getOtherVertex(currentVertex);
 						this.visited.add(currentVertex);
-						System.out.println(((Stop)currentVertex).getName());
+						// System.out.println(((Stop)currentVertex).getName());
 						currentEdge = null;
 						edgeProgress = 0;
 						if (currentVertex == goal) {
@@ -110,38 +113,43 @@ public class AntsSolver implements PathFinder {
 				// ant return path
 			} else {
 				if (currentEdge == null) {
-					edgeProgress = 0;
+					edgeProgress = 1;
 					currentEdge = path.remove(path.size() - 1);
 				} else {
 					// if the ant isn't at the end of the edge yet
 					if (edgeProgress < currentEdge.getCost()) {
 						edgeProgress++;
-					// if the ant is at the next vertex
+						// if the ant is at the next vertex
 					} else {
-						currentVertex = (currentVertex == currentEdge.getV1() ? currentEdge.getV2() : currentEdge.getV1());
+						currentVertex = currentEdge.getOtherVertex(currentVertex);
 						ph.put(currentEdge, (float) (ph.get(currentEdge) + Q / currentEdge.getCost()));
 						currentEdge = null;
 						edgeProgress = 0;
 						if (currentVertex == start) {
 							arrived = false;
 							path.clear();
-							visited.clear();
+							this.visited.clear();
 						}
 					}
 				}
 			}
 		}
 
-		private Edge chooseEdge(Graph g, Map<Edge, Float> ph, List<Vertex> visited) {
+		private Edge chooseEdge(Graph g, Map<Edge, Float> ph) {
 			List<Edge> edges = new ArrayList<>(g.edgesFromVertex(currentVertex));
-			for (Iterator iterator = edges.iterator(); iterator.hasNext();) {
-				Edge edge = (Edge) iterator.next();
+			for (Iterator<Edge> iterator = edges.iterator(); iterator.hasNext();) {
+				Edge edge = iterator.next();
 				for (Vertex v : visited) {
-					if(edge.hasVertex(v)) {
+					if (edge.hasVertex(v)) {
 						iterator.remove();
+						break;
 					}
 				}
 			}
+			if(edges.size() == 0) {
+				edges = g.edgesFromVertex(currentVertex);
+			}
+
 			float[] prob = new float[edges.size()];
 			float sum = 0;
 			for (int i = 0; i < prob.length; i++) {
@@ -163,6 +171,7 @@ public class AntsSolver implements PathFinder {
 				cp += prob[i];
 				if (p <= cp) {
 					r = edges.get(i);
+					break;
 				}
 			}
 			return r;
