@@ -1,5 +1,6 @@
 package ch.hepia.it.cffPathFinder.tests;
 
+import ch.hepia.it.cffPathFinder.backend.AntsSolver;
 import ch.hepia.it.cffPathFinder.backend.Dijkstra;
 import ch.hepia.it.cffPathFinder.backend.Floyd;
 import ch.hepia.it.cffPathFinder.backend.Graph;
@@ -34,6 +35,11 @@ public class TestOutput {
 		Path dijkstra = Dijkstra.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
 		System.out.println(dijkstra);
 		System.out.println("Cost " + dijkstra.getCost());
+		
+		System.out.println("-----------ACO-----------");
+		Path aco = AntsSolver.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
+		System.out.println(aco);
+		System.out.println("Cost " + aco.getCost());
 
 		System.out.println(g.edgesFromVertex(g.getVertex("Zurich")));
 

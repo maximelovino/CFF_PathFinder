@@ -34,6 +34,14 @@ public class Path {
 	public void insertAtEnd(Vertex v) {
 		this.path.add(v);
 	}
+	
+	/**
+	 * @param v vertex to check
+	 * @return true if the path contains the vertex, false otherwise
+	 */
+	public boolean contains(Vertex v) {
+		return this.path.contains(v);
+	}
 
 	/**
 	 * Setter for the cost of the Path
