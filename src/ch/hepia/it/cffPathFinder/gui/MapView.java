@@ -73,7 +73,7 @@ public class MapView extends JFrame {
 		floydMenu.add(costMatrixFloyd);
 
 		costMatrixFloyd.addActionListener(e -> {
-			String city = JOptionPane.showInputDialog("From what city?");
+			String city = JOptionPane.showInputDialog("From which city?");
 			Vertex cityVertex = graph.getVertex(city);
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Floyd.getInstance().shortestPath(graph, cityVertex, ViewType.COST_VIEW) : "We couldn't find the city " + city);
 		});
@@ -82,21 +82,20 @@ public class MapView extends JFrame {
 		floydMenu.add(precMatrixFloyd);
 
 		precMatrixFloyd.addActionListener(e -> {
-			String city = JOptionPane.showInputDialog("From what city?");
+			String city = JOptionPane.showInputDialog("From which city?");
 			Vertex cityVertex = graph.getVertex(city);
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Floyd.getInstance().shortestPath(graph, cityVertex, ViewType.PRECEDENCE_VIEW) : "We couldn't find the city " + city);
 		});
-
 
 		JMenuItem twoCitiesFloyd = new JMenuItem("6 and 7. Cost and path between two cities");
 		floydMenu.add(twoCitiesFloyd);
 
 		twoCitiesFloyd.addActionListener(e -> {
 
-			String city1Str = JOptionPane.showInputDialog("From what city?");
+			String city1Str = JOptionPane.showInputDialog("From which city?");
 			Vertex city1 = graph.getVertex(city1Str);
 			if (city1 != null) {
-				String city2Str = JOptionPane.showInputDialog("From what city?");
+				String city2Str = JOptionPane.showInputDialog("To which city?");
 				Vertex city2 = graph.getVertex(city2Str);
 				if (city2 != null) {
 					path = Floyd.getInstance().shortestPath(graph, city1, city2);
@@ -116,7 +115,7 @@ public class MapView extends JFrame {
 		dijkstraMenu.add(costMatrixDijkstra);
 
 		costMatrixDijkstra.addActionListener(e -> {
-			String city = JOptionPane.showInputDialog("From what city?");
+			String city = JOptionPane.showInputDialog("From which city?");
 			Vertex cityVertex = graph.getVertex(city);
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Dijkstra.getInstance().shortestPath(graph, cityVertex, ViewType.COST_VIEW) : "We couldn't find the city " + city);
 		});
@@ -125,7 +124,7 @@ public class MapView extends JFrame {
 		dijkstraMenu.add(precMatrixDijkstra);
 
 		precMatrixDijkstra.addActionListener(e -> {
-			String city = JOptionPane.showInputDialog("From what city?");
+			String city = JOptionPane.showInputDialog("From which city?");
 			Vertex cityVertex = graph.getVertex(city);
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Dijkstra.getInstance().shortestPath(graph, cityVertex, ViewType.PRECEDENCE_VIEW) : "We couldn't find the city " + city);
 		});
@@ -134,10 +133,10 @@ public class MapView extends JFrame {
 		dijkstraMenu.add(twoCitiesDijkstra);
 
 		twoCitiesDijkstra.addActionListener(e -> {
-			String city1Str = JOptionPane.showInputDialog("From what city?");
+			String city1Str = JOptionPane.showInputDialog("From which city?");
 			Vertex city1 = graph.getVertex(city1Str);
 			if (city1 != null) {
-				String city2Str = JOptionPane.showInputDialog("From what city?");
+				String city2Str = JOptionPane.showInputDialog("To which city?");
 				Vertex city2 = graph.getVertex(city2Str);
 				if (city2 != null) {
 					path = Dijkstra.getInstance().shortestPath(graph, city1, city2);
@@ -173,40 +172,41 @@ public class MapView extends JFrame {
 			repaint();
 		});
 
-
 		setJMenuBar(menuBar);
 	}
-	
-	
+
 	class DrawPane extends JPanel {
 
 		private static final long serialVersionUID = -1708275954294990938L;
 
 		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
+		protected void paintComponent(Graphics g1) {
+			super.paintComponent(g1);
+			Graphics2D g = (Graphics2D)g1;
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			Float[] p0 = points.get(0);
-			for (int i = 1; i < points.size()+1; i++) {
-				g.drawLine((int)(p0[0]*this.getWidth()), (int)(this.getHeight()-p0[1]*this.getHeight()), (int)(points.get(i % points.size())[0]*this.getWidth()), (int)(this.getHeight()-points.get(i % points.size())[1]*this.getHeight()));
+			for (int i = 1; i < points.size() + 1; i++) {
+				g.drawLine((int) (p0[0] * this.getWidth()), (int) (this.getHeight() - p0[1] * this.getHeight()), (int) (points.get(i % points.size())[0] * this.getWidth()), (int) (this.getHeight() - points.get(i % points.size())[1] * this.getHeight()));
 				p0 = points.get(i % points.size());
 			}
 
 			for (Vertex v : graph.getVertices()) {
-				Stop s = (Stop)v;
-				g.fillOval((int)(s.getxCoord()*this.getWidth())-10, (int)(this.getHeight()-s.getyCoord()*this.getHeight())-10, 20, 20);
+				Stop s = (Stop) v;
+				g.fillOval((int) (s.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s.getyCoord() * this.getHeight()) - 10, 20, 20);
+				g.drawString(s.getName(), (int) (s.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s.getyCoord() * this.getHeight()) - 10);
 			}
 
 			for (Edge e : graph.getEdges()) {
-				Stop s1 = (Stop)e.getV1();
-				Stop s2 = (Stop)e.getV2();
+				Stop s1 = (Stop) e.getV1();
+				Stop s2 = (Stop) e.getV2();
 
-				g.drawLine((int)(s1.getxCoord()*this.getWidth()), (int)(this.getHeight()-s1.getyCoord()*this.getHeight()), (int)(s2.getxCoord()*this.getWidth()), (int)(this.getHeight()-s2.getyCoord()*this.getHeight()));
+				g.drawLine((int) (s1.getxCoord() * this.getWidth()), (int) (this.getHeight() - s1.getyCoord() * this.getHeight()), (int) (s2.getxCoord() * this.getWidth()), (int) (this.getHeight() - s2.getyCoord() * this.getHeight()));
 			}
 
 			paintPath(g, path);
 		}
 
-		public void paintPath (Graphics g, Path p) {
+		public void paintPath(Graphics g, Path p) {
 			List<Vertex> pathList = p.getPath();
 			for (int i = 0; i < pathList.size() - 1; i++) {
 				Stop s1 = (Stop) pathList.get(i);
