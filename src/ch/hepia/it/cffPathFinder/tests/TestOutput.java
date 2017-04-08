@@ -27,17 +27,21 @@ public class TestOutput {
 //		} catch (TransformerException e) {
 //			e.printStackTrace();
 //		}
+
+		String city1 = "Lausanne";
+		String city2 = "Schaffouse";
+
 		System.out.println("-----------FLOYD-----------");
-		Path floyd = Floyd.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
+		Path floyd = Floyd.getInstance().shortestPath(g, g.getVertex(city1), g.getVertex(city2));
 		System.out.println(floyd);
 		System.out.println("Cost " + floyd.getCost());
 		System.out.println("-----------Dijkstra-----------");
-		Path dijkstra = Dijkstra.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
+		Path dijkstra = Dijkstra.getInstance().shortestPath(g, g.getVertex(city1), g.getVertex(city2));
 		System.out.println(dijkstra);
 		System.out.println("Cost " + dijkstra.getCost());
 		
 		System.out.println("-----------ACO-----------");
-		Path aco = AntsSolver.getInstance().shortestPath(g, g.getVertex("Sion"), g.getVertex("Zurich"));
+		Path aco = AntsSolver.getInstance().shortestPath(g, g.getVertex(city1), g.getVertex(city2));
 		System.out.println(aco);
 		System.out.println("Cost " + aco.getCost());
 	}

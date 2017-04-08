@@ -28,7 +28,7 @@ public class Dijkstra implements PathFinder {
 	}
 
 	@Override
-	public void shortestPath (Graph g, Vertex v1, ViewType viewType) {
+	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		distances = new HashMap<>();
 		precedence = new HashMap<>();
 		Queue<Vertex> queue = new PriorityQueue<>(Comparator.comparing(o -> distances.get(o)));
@@ -56,25 +56,26 @@ public class Dijkstra implements PathFinder {
 				}
 			}
 		}
-
+		String toReturn = "";
 		switch (viewType) {
 			case COST_VIEW:
 				for (Vertex v : g.getVertices()) {
-					System.out.print("[" + v.toString() + ":" + distances.get(v) + "] ");
+					toReturn += "[" + v.toString() + ":" + distances.get(v) + "] ";
 				}
-				System.out.println();
+				toReturn += "\n";
 				break;
 			case PRECEDENCE_VIEW:
 				for (Vertex v : g.getVertices()) {
 					if (!v.equals(v1)) {
-						System.out.print("[" + precedence.get(v).toString() + "<-" + v.toString() + "] ");
+						toReturn += "[" + precedence.get(v).toString() + "<-" + v.toString() + "] ";
 					}
 				}
-				System.out.println();
+				toReturn += "\n";
 				break;
 			default:
 				break;
 		}
+		return toReturn;
 	}
 
 	public Map<Vertex, Integer> getDistances () {

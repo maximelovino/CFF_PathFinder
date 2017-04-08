@@ -60,8 +60,8 @@ public class AntsSolver implements PathFinder {
 	}
 
 	@Override
-	public void shortestPath(Graph g, Vertex v1, ViewType viewType) {
-
+	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
+		return null;
 	}
 
 	private class Ant {

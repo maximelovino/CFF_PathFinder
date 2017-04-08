@@ -20,8 +20,9 @@ public interface PathFinder {
 	 * @param g    The Graph we're working on
 	 * @param v1    The departure Vertex
 	 * @param viewType	The ViewType we want
+	 * @return A string with the output formatted according to ViewType
 	 */
-	void shortestPath (Graph g, Vertex v1, ViewType viewType);
+	String shortestPath (Graph g, Vertex v1, ViewType viewType);
 
 	/**
 	 * Enumeration of the ViewTypes available

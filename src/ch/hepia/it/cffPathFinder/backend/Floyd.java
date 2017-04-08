@@ -32,7 +32,7 @@ public class Floyd implements PathFinder {
 	}
 
 	@Override
-	public void shortestPath (Graph g, Vertex v1, ViewType viewType) {
+	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		inverseCorrespondance = new HashMap<>();
 		List<Vertex> vertices = g.getVertices();
 
@@ -70,29 +70,29 @@ public class Floyd implements PathFinder {
 				}
 			}
 		}
-
+		String toReturn = "";
 		switch (viewType) {
 			case COST_VIEW:
 				for (int i = 0; i < distances.length; i++) {
 					for (int j = 0; j < distances[i].length; j++) {
-						System.out.print(distances[i][j] == Integer.MAX_VALUE ? "inf" : distances[i][j]);
-						System.out.print("\t");
+						toReturn += distances[i][j] == Integer.MAX_VALUE ? "inf" : distances[i][j];
+						toReturn += "\t";
 					}
-					System.out.println();
+					toReturn += "\n";
 				}
 				break;
 			case PRECEDENCE_VIEW:
 				for (int i = 0; i < precedences.length; i++) {
 					for (int j = 0; j < precedences[i].length; j++) {
-						System.out.print(precedences[i][j] == null ? -1 : inverseCorrespondance.get(precedences[i][j]));
-						System.out.print("\t");
+						toReturn += precedences[i][j] == null ? -1 : inverseCorrespondance.get(precedences[i][j]);
+						toReturn += "\n";
 					}
-					System.out.println();
+					toReturn += "\n";
 				}
 				break;
 			default:
 				break;
 		}
-
+		return toReturn;
 	}
 }

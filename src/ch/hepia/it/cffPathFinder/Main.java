@@ -6,7 +6,10 @@ import ch.hepia.it.cffPathFinder.backend.Graph;
 import ch.hepia.it.cffPathFinder.backend.Path;
 import ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 import ch.hepia.it.cffPathFinder.data.XMLTools;
+import ch.hepia.it.cffPathFinder.gui.MapView;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -64,6 +67,7 @@ public class Main {
 			System.err.println("Choix 15: suppression d'une liaison");
 			System.err.println("Choix 16: graphe connexe?");
 			System.err.println("Choix 17: sauver (format XML)");
+			System.err.println("Choix 18: Lancer la GUI");
 
 			System.err.println("Entrez votre choix: ");
 			choix = in.nextInt();
@@ -82,11 +86,11 @@ public class Main {
 					break;
 				case 4:
 					// Output "inf" instead of Integer.MAX_VALUE
-					Floyd.getInstance().shortestPath(graph, null, ViewType.COST_VIEW);
+					System.out.println(Floyd.getInstance().shortestPath(graph, null, ViewType.COST_VIEW));
 					break;
 				case 5:
 					// Print -1 if no predecessor
-					Floyd.getInstance().shortestPath(graph, null, ViewType.PRECEDENCE_VIEW);
+					System.out.println(Floyd.getInstance().shortestPath(graph, null, ViewType.PRECEDENCE_VIEW));
 					break;
 				case 6:
 					System.err.println("Ville d'origine:");
@@ -109,12 +113,12 @@ public class Main {
 				case 8:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
-					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.COST_VIEW);
+					System.out.println(Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.COST_VIEW));
 					break;
 				case 9:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
-					Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.PRECEDENCE_VIEW);
+					System.out.println(Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.PRECEDENCE_VIEW));
 					break;
 				case 10:
 					System.err.println("Ville d'origine:");
@@ -191,6 +195,17 @@ public class Main {
 						System.err.println("There was a problem with the output of the xml file");
 						e.printStackTrace(System.err);
 					}
+					break;
+				case 18:
+					Graph finalGraph = graph;
+					EventQueue.invokeLater(() -> {
+						try {
+							MapView frame = new MapView("data/suisse.txt", finalGraph);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					});
 					break;
 			}
 		} while (choix != 0);
