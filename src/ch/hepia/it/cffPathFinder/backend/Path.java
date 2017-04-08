@@ -59,6 +59,13 @@ public class Path {
 	}
 
 	/**
+	 * @return The list of Vertices forming the path
+	 */
+	public List<Vertex> getPath () {
+		return path;
+	}
+
+	/**
 	 * @return String representation of the Path
 	 */
 	@Override

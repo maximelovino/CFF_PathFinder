@@ -118,6 +118,7 @@ public class Main {
 				case 9:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
+					//TODO CHECK THE getVertex(str)
 					System.out.println(Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.PRECEDENCE_VIEW));
 					break;
 				case 10:

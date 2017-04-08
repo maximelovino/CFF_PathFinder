@@ -1,26 +1,24 @@
 package ch.hepia.it.cffPathFinder.gui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import ch.hepia.it.cffPathFinder.backend.*;
 import ch.hepia.it.cffPathFinder.data.MapReader;
 import ch.hepia.it.cffPathFinder.data.XMLTools;
 
-import static ch.hepia.it.cffPathFinder.backend.PathFinder.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.util.List;
+
+import static ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 
 public class MapView extends JFrame {
 
 	private static final long serialVersionUID = -3457299074936765792L;
-	private JPanel contentPane;
+	private DrawPane contentPane;
 	private List<Float[]> points;
 	private Graph graph;
 	private JMenuBar menuBar;
+	private Path path;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -37,6 +35,7 @@ public class MapView extends JFrame {
 
 	public MapView(String file, Graph g) {
 		this.graph = g;
+		this.path = new Path();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 768);
 		contentPane = new DrawPane();
@@ -88,18 +87,27 @@ public class MapView extends JFrame {
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Floyd.getInstance().shortestPath(graph, cityVertex, ViewType.PRECEDENCE_VIEW) : "We couldn't find the city " + city);
 		});
 
-		JMenuItem twoCitiesCostFloyd = new JMenuItem("6. Cost between two cities");
-		floydMenu.add(twoCitiesCostFloyd);
 
-		twoCitiesCostFloyd.addActionListener(e -> {
-			//TODO
-		});
+		JMenuItem twoCitiesFloyd = new JMenuItem("6 and 7. Cost and path between two cities");
+		floydMenu.add(twoCitiesFloyd);
 
-		JMenuItem twoCitiesPathFloyd = new JMenuItem("7. Path between two cities");
-		floydMenu.add(twoCitiesPathFloyd);
+		twoCitiesFloyd.addActionListener(e -> {
 
-		twoCitiesPathFloyd.addActionListener(e -> {
-			//TODO
+			String city1Str = JOptionPane.showInputDialog("From what city?");
+			Vertex city1 = graph.getVertex(city1Str);
+			if (city1 != null) {
+				String city2Str = JOptionPane.showInputDialog("From what city?");
+				Vertex city2 = graph.getVertex(city2Str);
+				if (city2 != null) {
+					path = Floyd.getInstance().shortestPath(graph, city1, city2);
+					repaint();
+					JOptionPane.showMessageDialog(this, "The duration of the trip from " + city1.getName() + " to " + city2.getName() + " is " + path.getCost());
+				} else {
+					JOptionPane.showMessageDialog(this, "The city " + city2Str + " doesn't exist");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "The city " + city1Str + " doesn't exist");
+			}
 		});
 
 		JMenu dijkstraMenu = new JMenu("Dijkstra algorithm");
@@ -122,18 +130,25 @@ public class MapView extends JFrame {
 			JOptionPane.showMessageDialog(this, cityVertex != null ? Dijkstra.getInstance().shortestPath(graph, cityVertex, ViewType.PRECEDENCE_VIEW) : "We couldn't find the city " + city);
 		});
 
-		JMenuItem twoCitiesCostDijkstra = new JMenuItem("10. Cost between two cities");
-		dijkstraMenu.add(twoCitiesCostDijkstra);
+		JMenuItem twoCitiesDijkstra = new JMenuItem("10 and 11. Cost and path between two cities");
+		dijkstraMenu.add(twoCitiesDijkstra);
 
-		twoCitiesCostDijkstra.addActionListener(e -> {
-			//TODO
-		});
-
-		JMenuItem twoCitiesPathDijkstra = new JMenuItem("11. Path between two cities");
-		dijkstraMenu.add(twoCitiesPathDijkstra);
-
-		twoCitiesPathDijkstra.addActionListener(e -> {
-			//TODO
+		twoCitiesDijkstra.addActionListener(e -> {
+			String city1Str = JOptionPane.showInputDialog("From what city?");
+			Vertex city1 = graph.getVertex(city1Str);
+			if (city1 != null) {
+				String city2Str = JOptionPane.showInputDialog("From what city?");
+				Vertex city2 = graph.getVertex(city2Str);
+				if (city2 != null) {
+					path = Dijkstra.getInstance().shortestPath(graph, city1, city2);
+					repaint();
+					JOptionPane.showMessageDialog(this, "The duration of the trip from " + city1.getName() + " to " + city2.getName() + " is " + path.getCost());
+				} else {
+					JOptionPane.showMessageDialog(this, "The city " + city2Str + " doesn't exist");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "The city " + city1Str + " doesn't exist");
+			}
 		});
 
 		JMenu graphTools = new JMenu("Graph tools");
@@ -150,6 +165,13 @@ public class MapView extends JFrame {
 		graphTools.add(connexityCheck);
 		JMenuItem exportXML = new JMenuItem("17. Export to XML");
 		graphTools.add(exportXML);
+		JMenuItem clearGraph = new JMenuItem("CLEAR MAP");
+		graphTools.add(clearGraph);
+
+		clearGraph.addActionListener(e -> {
+			path = new Path();
+			repaint();
+		});
 
 
 		setJMenuBar(menuBar);
@@ -168,17 +190,32 @@ public class MapView extends JFrame {
 				g.drawLine((int)(p0[0]*this.getWidth()), (int)(this.getHeight()-p0[1]*this.getHeight()), (int)(points.get(i % points.size())[0]*this.getWidth()), (int)(this.getHeight()-points.get(i % points.size())[1]*this.getHeight()));
 				p0 = points.get(i % points.size());
 			}
-			
+
 			for (Vertex v : graph.getVertices()) {
 				Stop s = (Stop)v;
 				g.fillOval((int)(s.getxCoord()*this.getWidth())-10, (int)(this.getHeight()-s.getyCoord()*this.getHeight())-10, 20, 20);
 			}
-			
+
 			for (Edge e : graph.getEdges()) {
 				Stop s1 = (Stop)e.getV1();
 				Stop s2 = (Stop)e.getV2();
 
 				g.drawLine((int)(s1.getxCoord()*this.getWidth()), (int)(this.getHeight()-s1.getyCoord()*this.getHeight()), (int)(s2.getxCoord()*this.getWidth()), (int)(this.getHeight()-s2.getyCoord()*this.getHeight()));
+			}
+
+			paintPath(g, path);
+		}
+
+		public void paintPath (Graphics g, Path p) {
+			List<Vertex> pathList = p.getPath();
+			for (int i = 0; i < pathList.size() - 1; i++) {
+				Stop s1 = (Stop) pathList.get(i);
+				Stop s2 = (Stop) pathList.get(i + 1);
+				g.setColor(Color.red);
+				g.drawLine((int) (s1.getxCoord() * this.getWidth()), (int) (this.getHeight() - s1.getyCoord() * this.getHeight()), (int) (s2.getxCoord() * this.getWidth()), (int) (this.getHeight() - s2.getyCoord() * this.getHeight()));
+				g.fillOval((int) (s1.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s1.getyCoord() * this.getHeight()) - 10, 20, 20);
+				g.fillOval((int) (s2.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s2.getyCoord() * this.getHeight()) - 10, 20, 20);
+
 			}
 		}
 	}
