@@ -32,6 +32,7 @@ public class Graph {
 			for (Edge e : this.edgesFromVertex(v)) {
 				this.edges.remove(e);
 			}
+			vertices.remove(v);
 		} else {
 			throw new RuntimeException("Vertex " + city + " doesn't exist");
 		}
@@ -45,7 +46,7 @@ public class Graph {
 			Edge e = new Edge(v1, v2, cost);
 			edges.add(e);
 		} else {
-			throw new RuntimeException((v1 == null ? city1 : city2) + (v2 == null ? " and " + city2 : "") + " not in the list of vertices");
+			throw new RuntimeException((v1 == null ? city1 : "") + (v2 == null && v1 == null ? " and " : "") + (v2 == null ? city2 : "") + " not in the list of vertices");
 		}
 	}
 
@@ -63,7 +64,7 @@ public class Graph {
 				}
 			}
 		} else {
-			throw new RuntimeException((v1 == null ? city1 : city2) + (v2 == null ? " and " + city2 : "") + " not in the list of vertices");
+			throw new RuntimeException((v1 == null ? city1 : "") + (v2 == null && v1 == null ? " and " : "") + (v2 == null ? city2 : "") + " not in the list of vertices");
 		}
 		if (!ok) {
 			throw new RuntimeException("No edge was found");

@@ -84,12 +84,12 @@ public abstract class XMLTools {
 	/**
 	 * Function to export an XML data file from our Graph
 	 *
-	 * @param xmlFilePath The path of the file to export
+	 * @param file The file to export
 	 * @param graph       The Graph we want to export
 	 * @throws ParserConfigurationException
 	 * @throws TransformerException
 	 */
-	public static void writeToXML (String xmlFilePath, Graph graph) throws ParserConfigurationException, TransformerException {
+	public static void writeToXML (File file, Graph graph) throws ParserConfigurationException, TransformerException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbFactory.newDocumentBuilder();
 
@@ -142,7 +142,7 @@ public abstract class XMLTools {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File(xmlFilePath));
+		StreamResult result = new StreamResult(file);
 		transformer.transform(source, result);
 	}
 }

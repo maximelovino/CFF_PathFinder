@@ -8,7 +8,6 @@ import ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 import ch.hepia.it.cffPathFinder.data.XMLTools;
 import ch.hepia.it.cffPathFinder.gui.MapView;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -191,7 +190,7 @@ public class Main {
 					System.err.println("Nom du fichier XML:");
 					str1 = in.next();
 					try {
-						XMLTools.writeToXML(str1, graph);
+						XMLTools.writeToXML(new File(str1), graph);
 					} catch (Exception e) {
 						System.err.println("There was a problem with the output of the xml file");
 						e.printStackTrace(System.err);
