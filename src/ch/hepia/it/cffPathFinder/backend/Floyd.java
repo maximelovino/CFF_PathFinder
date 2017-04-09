@@ -58,14 +58,14 @@ public class Floyd implements PathFinder {
 			precedences[vTemp2][vTemp1] = e.getV1();
 		}
 
-		for (int i = 0; i < vertices.size(); i++) {
-			for (int j = 0; j < vertices.size(); j++) {
-				for (int k = 0; k < vertices.size(); k++) {
-					if (!(distances[i][k] == Integer.MAX_VALUE || distances[k][j] == Integer.MAX_VALUE) && distances[i][j] > distances[i][k] + distances[k][j]) {
-						distances[i][j] = distances[i][k] + distances[k][j];
-						distances[j][i] = distances[i][k] + distances[k][j];
-						precedences[i][j] = precedences[i][k];
-						precedences[j][i] = precedences[j][k];
+		for (int intermediate = 0; intermediate < vertices.size(); intermediate++) {
+			for (int start = 0; start < vertices.size(); start++) {
+				for (int end = 0; end < vertices.size(); end++) {
+					if (!(distances[start][intermediate] == Integer.MAX_VALUE || distances[intermediate][end] == Integer.MAX_VALUE) && distances[start][end] > (distances[start][intermediate] + distances[intermediate][end])) {
+						distances[start][end] = distances[start][intermediate] + distances[intermediate][end];
+						distances[end][start] = distances[end][intermediate] + distances[intermediate][start];
+						precedences[start][end] = precedences[start][intermediate];
+						precedences[end][start] = precedences[end][intermediate];
 					}
 				}
 			}
