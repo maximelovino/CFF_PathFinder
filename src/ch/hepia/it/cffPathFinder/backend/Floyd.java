@@ -85,7 +85,7 @@ public class Floyd implements PathFinder {
 				for (int i = 0; i < precedences.length; i++) {
 					for (int j = 0; j < precedences[i].length; j++) {
 						toReturn += precedences[i][j] == null ? -1 : inverseCorrespondance.get(precedences[i][j]);
-						toReturn += "\n";
+						toReturn += "\t";
 					}
 					toReturn += "\n";
 				}

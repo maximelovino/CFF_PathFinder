@@ -44,7 +44,7 @@ public class Dijkstra implements PathFinder {
 
 		while (!queue.isEmpty()) {
 			Vertex v = queue.poll();
-
+			if (distances.get(v) == Integer.MAX_VALUE) break;
 			for (Edge e : g.edgesFromVertex(v)) {
 				Vertex u = e.getOtherVertex(v);
 				int alt = distances.get(v) + e.getCost();

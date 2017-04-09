@@ -70,6 +70,7 @@ public class Path {
 	 */
 	@Override
 	public String toString () {
+		if (path.size() == 0) return "[]";
 		String out = "[";
 		for (int i = 0; i < path.size(); i++) {
 			out += path.get(i).toString() + (i != path.size() - 1 ? ":" : "]");
