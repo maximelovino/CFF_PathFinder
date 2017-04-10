@@ -2,22 +2,42 @@ package ch.hepia.it.cffPathFinder.backend;
 
 import java.util.*;
 
+/**
+ * Class representing the Graph
+ */
 public class Graph {
 	private final List<Edge> edges;
 	private final List<Vertex> vertices;
 
+	/**
+	 * Constructor that initializes an empty Graph
+	 */
 	public Graph () {
 		edges = new ArrayList<>();
 		vertices = new ArrayList<>();
 	}
 
-	public void addVertex (Vertex v) {
+	/**
+	 * Method to add a Vertex to the Graph (if not already done)
+	 *
+	 * @param v The Vertex to add
+	 * @throws RuntimeException If the Vertex already exists
+	 */
+	public void addVertex (Vertex v) throws RuntimeException {
 		if (!vertices.contains(v)) {
 			vertices.add(v);
+		} else {
+			throw new RuntimeException("The vertex exists already");
 		}
 	}
 
-	public void addVertex (String name) {
+	/**
+	 * Method to add a Vertex by name (if there isn't one already)
+	 *
+	 * @param name The name of the Vertex to add
+	 * @throws RuntimeException If the Vertex already exists
+	 */
+	public void addVertex (String name) throws RuntimeException {
 		if (this.getVertex(name) == null) {
 			addVertex(new Vertex(name));
 		} else {
@@ -25,7 +45,13 @@ public class Graph {
 		}
 	}
 
-	public void removeVertex (String city) {
+	/**
+	 * Method to remove a Vertex by name
+	 *
+	 * @param city The name of the Vertex to remove
+	 * @throws RuntimeException If the Vertex doesn't exist
+	 */
+	public void removeVertex (String city) throws RuntimeException {
 		Vertex v = this.getVertex(city);
 
 		if (v != null) {
@@ -38,7 +64,15 @@ public class Graph {
 		}
 	}
 
-	public void addEdge (String city1, String city2, int cost) {
+	/**
+	 * Method to add an Edge between two Vertices by names
+	 *
+	 * @param city1 The name of the first Vertex
+	 * @param city2 The name of the second Vertex
+	 * @param cost  The cost of the Edge
+	 * @throws RuntimeException If one or both of the Vertices don't exist
+	 */
+	public void addEdge (String city1, String city2, int cost) throws RuntimeException {
 		Vertex v1 = this.getVertex(city1);
 		Vertex v2 = this.getVertex(city2);
 
@@ -50,7 +84,14 @@ public class Graph {
 		}
 	}
 
-	public void removeEdge (String city1, String city2) {
+	/**
+	 * Method to remove an Edge between two Vertices by names
+	 *
+	 * @param city1 The name of the first Vertex
+	 * @param city2 The name of the second Vertex
+	 * @throws RuntimeException If one or both of the Vertices don't exist, or the Edge doesn't exist
+	 */
+	public void removeEdge (String city1, String city2) throws RuntimeException {
 		Vertex v1 = this.getVertex(city1);
 		Vertex v2 = this.getVertex(city2);
 		boolean ok = false;
@@ -101,6 +142,12 @@ public class Graph {
 		return true;
 	}
 
+	/**
+	 * Method to get the next point to check in connexity check
+	 *
+	 * @param map The map of the test
+	 * @return The Vertex to check
+	 */
 	private Vertex getNextPointToCheck (Map<Vertex, Boolean[]> map) {
 		for (Vertex s : map.keySet()) {
 			Boolean[] vals = map.get(s);
@@ -111,6 +158,12 @@ public class Graph {
 		return null;
 	}
 
+	/**
+	 * Method to get a List of the Edges from a Vertex
+	 *
+	 * @param v The Vertex to get the Edges from
+	 * @return The List of the Edges from that Vertex
+	 */
 	public List<Edge> edgesFromVertex (Vertex v) {
 		List<Edge> result = new ArrayList<>();
 		for (Edge e : edges) {
@@ -120,6 +173,12 @@ public class Graph {
 		return result;
 	}
 
+	/**
+	 * Method to get a Vertex by name
+	 *
+	 * @param name The name of the Vertex to get
+	 * @return The Vertex, or null if doesn't exist
+	 */
 	public Vertex getVertex (String name) {
 		for (Vertex v : vertices) {
 			if (v.getName().equals(name)) return v;
@@ -127,19 +186,31 @@ public class Graph {
 		return null;
 	}
 
+	/**
+	 * @return The list of Edges
+	 */
 	public List<Edge> getEdges () {
 		return edges;
 	}
 
+	/**
+	 * @return The list of Vertices
+	 */
 	public List<Vertex> getVertices () {
 		return vertices;
 	}
 
+	/**
+	 * @return String representation of the Graph
+	 */
 	@Override
 	public String toString () {
 		return edges.toString();
 	}
 
+	/**
+	 * @return A string representation of the Graph as an adjacency list
+	 */
 	public String adjacencyListString () {
 		String out = "";
 		for (Vertex v : vertices) {
@@ -153,6 +224,9 @@ public class Graph {
 		return out;
 	}
 
+	/**
+	 * @return A string representation of all the Vertices in the Graph
+	 */
 	public String verticesToString () {
 		String out = "";
 		for (int i = 0; i < vertices.size(); i++) {
@@ -164,6 +238,9 @@ public class Graph {
 		return out;
 	}
 
+	/**
+	 * @return A string representation of the Graph as an adjacency matrix
+	 */
 	public String adjacencyMatrixString () {
 		Map<Vertex, Integer> inverseCorrespondance = new HashMap<>();
 

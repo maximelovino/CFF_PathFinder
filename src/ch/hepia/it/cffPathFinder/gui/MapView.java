@@ -12,6 +12,9 @@ import java.util.List;
 
 import static ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 
+/**
+ * Class implementing the GUI
+ */
 public class MapView extends JFrame {
 
 	private static final long serialVersionUID = -3457299074936765792L;
@@ -21,6 +24,12 @@ public class MapView extends JFrame {
 	private JMenuBar menuBar;
 	private Path path;
 
+	/**
+	 * Main constructor for the GUI
+	 *
+	 * @param file The file from which to read the silhouette of the map
+	 * @param g    The graph
+	 */
 	public MapView (String file, Graph g) {
 		this.graph = g;
 		this.path = new Path();
@@ -30,7 +39,13 @@ public class MapView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		points = MapReader.readMap(file, g);
+		try {
+			points = MapReader.readMap(file, g);
+		} catch (ClassCastException e) {
+			JOptionPane.showMessageDialog(this, "The GUI can't be displayed because some cities were added through the console, so they don't have coordinates. \n" +
+					" To add cities for the GUI, please do it through the GUI instead by specifying coordinates");
+			System.exit(1);
+		}
 		menuBar = new JMenuBar();
 		JMenu infoMenu = new JMenu("Informations about the Graph");
 		menuBar.add(infoMenu);
@@ -130,6 +145,34 @@ public class MapView extends JFrame {
 				JOptionPane.showMessageDialog(this, "The city " + city1Str + " doesn't exist");
 			}
 		});
+
+		JMenu antsMenu = new JMenu("Ants algorithm");
+		menuBar.add(antsMenu);
+		JMenuItem antsPath = new JMenuItem("19. Ants path between two cities");
+		antsMenu.add(antsPath);
+
+		antsPath.addActionListener(e -> {
+			String city1Str = JOptionPane.showInputDialog("From which city?");
+			Vertex city1 = graph.getVertex(city1Str);
+			if (city1 != null) {
+				String city2Str = JOptionPane.showInputDialog("To which city?");
+				Vertex city2 = graph.getVertex(city2Str);
+				if (city2 != null) {
+					try{
+						path = AntsSolver.getInstance().shortestPath(graph, city1, city2);
+						repaint();
+						JOptionPane.showMessageDialog(this, "The duration of the trip from " + city1.getName() + " to " + city2.getName() + " is " + path.getCost());
+					}catch (NullPointerException e1){
+						JOptionPane.showMessageDialog(this,"No path could be found");
+					}
+				} else {
+					JOptionPane.showMessageDialog(this, "The city " + city2Str + " doesn't exist");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "The city " + city1Str + " doesn't exist");
+			}
+		});
+
 
 		JMenu graphTools = new JMenu("Graph tools");
 		menuBar.add(graphTools);
@@ -231,10 +274,18 @@ public class MapView extends JFrame {
 		setJMenuBar(menuBar);
 	}
 
+	/**
+	 * Class for the panel displaying the map and the graph
+	 */
 	class DrawPane extends JPanel {
 
 		private static final long serialVersionUID = -1708275954294990938L;
 
+		/**
+		 * Function called to paint the panel
+		 *
+		 * @param g1 The graphics context
+		 */
 		@Override
 		protected void paintComponent (Graphics g1) {
 			super.paintComponent(g1);
@@ -265,6 +316,12 @@ public class MapView extends JFrame {
 			paintPath(g, path);
 		}
 
+		/**
+		 * Function to highlight a path in red on the map
+		 *
+		 * @param g The graphics context
+		 * @param p The path to highlight
+		 */
 		public void paintPath (Graphics g, Path p) {
 			List<Vertex> pathList = p.getPath();
 			for (int i = 0; i < pathList.size() - 1; i++) {

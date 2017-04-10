@@ -2,18 +2,35 @@ package ch.hepia.it.cffPathFinder.backend;
 
 import java.util.*;
 
+/**
+ * Class implementing the Dijkstra algorithm
+ */
 public class Dijkstra implements PathFinder {
 	private static Dijkstra instance = new Dijkstra();
 	private static Map<Vertex, Integer> distances;
 	private static Map<Vertex, Vertex> precedence;
-	
+
+	/**
+	 * Default private constuctor
+	 */
 	private Dijkstra () {
 	}
 
+	/**
+	 * @return The instance of the Dijkstra class
+	 */
 	public static Dijkstra getInstance () {
 		return instance;
 	}
 
+	/**
+	 * Method to get the shortest path between two Vertices using Dijkstra algorithm
+	 *
+	 * @param g  The Graph we're working on
+	 * @param v1 The departure Vertex
+	 * @param v2 The arrival Vertex
+	 * @return The shortest path between v1 and v2
+	 */
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		shortestPath(g, v1, ViewType.NO_VIEW);
 
@@ -27,6 +44,14 @@ public class Dijkstra implements PathFinder {
 		return p;
 	}
 
+	/**
+	 * Method to get the path to all Vertices from v1
+	 *
+	 * @param g        The Graph we're working on
+	 * @param v1       The departure Vertex
+	 * @param viewType The ViewType we want
+	 * @return A string with the output formatted according to ViewType
+	 */
 	@Override
 	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		distances = new HashMap<>();

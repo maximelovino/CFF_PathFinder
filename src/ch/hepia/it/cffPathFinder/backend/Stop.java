@@ -36,7 +36,7 @@ public class Stop extends Vertex implements Comparable<Stop> {
 	}
 
 	/**
-	 * @param obj    The object we're comparing to
+	 * @param obj The object we're comparing to
 	 * @return If this Stop is equal to obj (Both Stops with equal names)
 	 */
 	@Override
@@ -49,8 +49,8 @@ public class Stop extends Vertex implements Comparable<Stop> {
 	}
 
 	/**
-	 * @param o    The Stop we're comparing to
-	 * @return    -1 if the Stop is smaller, 0 if equal, 1 otherwise (comparison is made on the names)
+	 * @param o The Stop we're comparing to
+	 * @return -1 if the Stop is smaller, 0 if equal, 1 otherwise (comparison is made on the names)
 	 */
 	@Override
 	public int compareTo (Stop o) {
@@ -59,17 +59,19 @@ public class Stop extends Vertex implements Comparable<Stop> {
 
 	/**
 	 * Setter for the x coordinate
-	 * @param xCoord    The new x coordinate
+	 *
+	 * @param xCoord The new x coordinate
 	 */
-	public void setxCoord(float xCoord) {
+	public void setxCoord (float xCoord) {
 		this.xCoord = xCoord;
 	}
 
 	/**
 	 * Setter for the y coordinate
-	 * @param yCoord    The new y coordinate
+	 *
+	 * @param yCoord The new y coordinate
 	 */
-	public void setyCoord(float yCoord) {
+	public void setyCoord (float yCoord) {
 		this.yCoord = yCoord;
 	}
 }

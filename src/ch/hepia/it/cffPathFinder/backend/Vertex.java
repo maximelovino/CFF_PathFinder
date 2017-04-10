@@ -11,7 +11,7 @@ public class Vertex {
 	 *
 	 * @param name The name of the Vertex
 	 */
-	public Vertex(String name) {
+	public Vertex (String name) {
 		this.name = name;
 	}
 

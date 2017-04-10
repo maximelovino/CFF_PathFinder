@@ -17,9 +17,10 @@ public interface PathFinder {
 	/**
 	 * Method that computes the shortest path for all Vertices from a departure Vertex
 	 * Displays the results according to a ViewType
-	 * @param g    The Graph we're working on
-	 * @param v1    The departure Vertex
-	 * @param viewType	The ViewType we want
+	 *
+	 * @param g        The Graph we're working on
+	 * @param v1       The departure Vertex
+	 * @param viewType The ViewType we want
 	 * @return A string with the output formatted according to ViewType
 	 */
 	String shortestPath (Graph g, Vertex v1, ViewType viewType);

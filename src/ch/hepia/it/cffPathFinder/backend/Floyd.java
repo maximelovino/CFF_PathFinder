@@ -4,20 +4,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class implementing the Floyd algorithm
+ */
 public class Floyd implements PathFinder {
 	private static Floyd instance = new Floyd();
 	private static int[][] distances;
 	private static Vertex[][] precedences;
 	private static Map<Vertex, Integer> inverseCorrespondance;
 
+	/**
+	 * Default private constuctor
+	 */
 	private Floyd () {
 
 	}
 
+	/**
+	 * @return The instance of the Floyd class
+	 */
 	public static Floyd getInstance () {
 		return instance;
 	}
 
+	/**
+	 * Method to get the shortest path between two Vertices using Floyd algorithm
+	 *
+	 * @param g  The Graph we're working on
+	 * @param v1 The departure Vertex
+	 * @param v2 The arrival Vertex
+	 * @return The shortest path between v1 and v2
+	 */
 	@Override
 	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		shortestPath(g, v1, ViewType.NO_VIEW);
@@ -31,6 +48,14 @@ public class Floyd implements PathFinder {
 		return p;
 	}
 
+	/**
+	 * Method to get the path to all Vertices from v1
+	 *
+	 * @param g        The Graph we're working on
+	 * @param v1       The departure Vertex
+	 * @param viewType The ViewType we want
+	 * @return A string with the output formatted according to ViewType
+	 */
 	@Override
 	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		inverseCorrespondance = new HashMap<>();

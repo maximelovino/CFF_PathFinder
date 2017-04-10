@@ -14,15 +14,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.awt.font.TransformAttribute;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,10 +31,10 @@ public abstract class XMLTools {
 	 * Function to parse the XML data file for the train network
 	 *
 	 * @param path The path of the file to parse
+	 * @return The Graph of the network
 	 * @throws ParserConfigurationException
 	 * @throws IOException
 	 * @throws SAXException
-	 * @return The Graph of the network
 	 */
 	public static Graph parse (String path) throws ParserConfigurationException, IOException, SAXException {
 		Graph g = new Graph();
@@ -84,8 +81,8 @@ public abstract class XMLTools {
 	/**
 	 * Function to export an XML data file from our Graph
 	 *
-	 * @param file The file to export
-	 * @param graph       The Graph we want to export
+	 * @param file  The file to export
+	 * @param graph The Graph we want to export
 	 * @throws ParserConfigurationException
 	 * @throws TransformerException
 	 */

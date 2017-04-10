@@ -1,13 +1,10 @@
 package ch.hepia.it.cffPathFinder.backend;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * Class implementing Ants Simulation
+ */
 public class AntsSolver implements PathFinder {
 	private static AntsSolver instance = new AntsSolver();
 	private static final int ANTS_COUNT = 1000;
@@ -16,16 +13,30 @@ public class AntsSolver implements PathFinder {
 	private static final double BETA = 1;
 	private static final double Q = 1;
 
-	private AntsSolver() {
+	/**
+	 * Default private constuctor
+	 */
+	private AntsSolver () {
 
 	}
 
-	public static AntsSolver getInstance() {
+	/**
+	 * @return The instance of the Floyd class
+	 */
+	public static AntsSolver getInstance () {
 		return instance;
 	}
 
+	/**
+	 * Method to get the shortest path between two Vertices using Ants algorithm
+	 *
+	 * @param g  The Graph we're working on
+	 * @param v1 The departure Vertex
+	 * @param v2 The arrival Vertex
+	 * @return The shortest path between v1 and v2
+	 */
 	@Override
-	public Path shortestPath(Graph g, Vertex v1, Vertex v2) {
+	public Path shortestPath (Graph g, Vertex v1, Vertex v2) {
 		Map<Edge, Float> pheromoneTrail = new HashMap<>();
 		Path p = new Path();
 		Ant[] ants = new Ant[ANTS_COUNT];
@@ -40,11 +51,6 @@ public class AntsSolver implements PathFinder {
 		for (int i = 0; i < STEP_COUNT; i++) {
 			for (Ant ant : ants) {
 				ant.update(g, pheromoneTrail);
-				/*
-				for (Edge edge : g.getEdges()) {
-					pheromoneTrail.put(edge, Math.max(pheromoneTrail.get(edge) - 1f, 1));
-				}
-				*/
 			}
 		}
 		Vertex c = v1;
@@ -74,11 +80,17 @@ public class AntsSolver implements PathFinder {
 		return p;
 	}
 
+	/**
+	 * Function not relevant here, but part of the interface
+	 */
 	@Override
-	public String shortestPath(Graph g, Vertex v1, ViewType viewType) {
+	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
 		return null;
 	}
 
+	/**
+	 * Class representing an Ant
+	 */
 	private class Ant {
 		private List<Edge> path;
 		private Vertex currentVertex;
@@ -88,7 +100,13 @@ public class AntsSolver implements PathFinder {
 		private List<Vertex> visited;
 		private Set<Edge> pheromoned;
 
-		public Ant(Vertex v1, Vertex goal) {
+		/**
+		 * Constructor for ant
+		 *
+		 * @param v1   The start Vertex
+		 * @param goal The destination Vertex
+		 */
+		public Ant (Vertex v1, Vertex goal) {
 			this.currentVertex = v1;
 			this.path = new ArrayList<>();
 			this.arrived = false;
@@ -99,7 +117,13 @@ public class AntsSolver implements PathFinder {
 			this.pheromoned = new HashSet<>();
 		}
 
-		public void update(Graph g, Map<Edge, Float> ph) {
+		/**
+		 * Function to update the pheromones on the Edges
+		 *
+		 * @param g  The Graph
+		 * @param ph The map of Edges and their associated pheromone count
+		 */
+		public void update (Graph g, Map<Edge, Float> ph) {
 			// ant blind progress
 			if (!arrived) {
 				Edge e = chooseEdge(g, ph);
@@ -123,9 +147,16 @@ public class AntsSolver implements PathFinder {
 			}
 		}
 
-		private Edge chooseEdge(Graph g, Map<Edge, Float> ph) {
+		/**
+		 * Function to choose the next Edge
+		 *
+		 * @param g  The Graph
+		 * @param ph The map of Edges and their associated pheromone count
+		 * @return The next Edge
+		 */
+		private Edge chooseEdge (Graph g, Map<Edge, Float> ph) {
 			List<Edge> edges = new ArrayList<>(g.edgesFromVertex(currentVertex));
-			for (Iterator<Edge> iterator = edges.iterator(); iterator.hasNext();) {
+			for (Iterator<Edge> iterator = edges.iterator(); iterator.hasNext(); ) {
 				Edge edge = iterator.next();
 				for (Vertex v : visited) {
 					if (edge.hasVertex(v)) {

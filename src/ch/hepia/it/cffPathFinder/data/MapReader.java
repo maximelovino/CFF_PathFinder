@@ -10,10 +10,21 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class implementing static function to read the map of Switzerland as points
+ */
 public class MapReader {
 	private static float maxx = 1, maxy = 1;
 	private static float minx = Float.POSITIVE_INFINITY, miny = Float.POSITIVE_INFINITY;
 
+	/**
+	 * Function that reads the file with the points of the map as well as normalizing the Vertices of the graph
+	 * to fit the map
+	 *
+	 * @param file The path file to read
+	 * @param g    The graph
+	 * @return A list of points (each point is an array of Float [x,y])
+	 */
 	public static List<Float[]> readMap (String file, Graph g) {
 		List<Float[]> points = new ArrayList<>();
 
@@ -41,14 +52,17 @@ public class MapReader {
 		}
 
 		for (Vertex v : g.getVertices()) {
-			if (v instanceof Stop) {
-				Stop s = (Stop) v;
-				normalizeStop(s);
-			}
+			Stop s = (Stop) v;
+			normalizeStop(s);
 		}
 		return points;
 	}
 
+	/**
+	 * Function to normalize a Stop to fit the map (its coordinates)
+	 *
+	 * @param s The stop to normalize
+	 */
 	public static void normalizeStop (Stop s) {
 		s.setxCoord(s.getxCoord() - minx);
 		s.setyCoord(s.getyCoord() - miny);

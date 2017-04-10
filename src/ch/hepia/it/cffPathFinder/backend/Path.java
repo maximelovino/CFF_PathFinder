@@ -14,38 +14,41 @@ public class Path {
 	/**
 	 * Default constructor for a Path, will create an empty path of cost 0
 	 */
-	public Path() {
+	public Path () {
 		this.path = new ArrayList<>();
 		this.cost = 0;
 	}
 
 	/**
 	 * Method to insert a Vertex at the beginning of the Path
-	 * @param v    The Vertex to insert
+	 *
+	 * @param v The Vertex to insert
 	 */
-	public void insertAtBeginning(Vertex v) {
+	public void insertAtBeginning (Vertex v) {
 		this.path.add(0, v);
 	}
 
 	/**
 	 * Method to insert a Vertex at the end of the Path
-	 * @param v    The Vertex to insert
+	 *
+	 * @param v The Vertex to insert
 	 */
-	public void insertAtEnd(Vertex v) {
+	public void insertAtEnd (Vertex v) {
 		this.path.add(v);
 	}
-	
+
 	/**
 	 * @param v vertex to check
 	 * @return true if the path contains the vertex, false otherwise
 	 */
-	public boolean contains(Vertex v) {
+	public boolean contains (Vertex v) {
 		return this.path.contains(v);
 	}
 
 	/**
 	 * Setter for the cost of the Path
-	 * @param cost    The new cost
+	 *
+	 * @param cost The new cost
 	 */
 	public void setCost (int cost) {
 		this.cost = cost;

@@ -1,9 +1,6 @@
 package ch.hepia.it.cffPathFinder;
 
-import ch.hepia.it.cffPathFinder.backend.Dijkstra;
-import ch.hepia.it.cffPathFinder.backend.Floyd;
-import ch.hepia.it.cffPathFinder.backend.Graph;
-import ch.hepia.it.cffPathFinder.backend.Path;
+import ch.hepia.it.cffPathFinder.backend.*;
 import ch.hepia.it.cffPathFinder.backend.PathFinder.ViewType;
 import ch.hepia.it.cffPathFinder.data.XMLTools;
 import ch.hepia.it.cffPathFinder.gui.MapView;
@@ -67,11 +64,13 @@ public class Main {
 			System.err.println("Choix 16: graphe connexe?");
 			System.err.println("Choix 17: sauver (format XML)");
 			System.err.println("Choix 18: Lancer la GUI");
+			System.err.println("Choix 19: Simulation de fourmis entre deux villes");
 
 			System.err.println("Entrez votre choix: ");
 			choix = in.nextInt();
 			String str1, str2, str3;
 			Path p;
+			Vertex v1, v2;
 			switch (choix) {
 				case 1:
 					System.out.println(graph.verticesToString());
@@ -117,8 +116,12 @@ public class Main {
 				case 9:
 					System.err.println("Ville d'origine:");
 					str1 = in.next();
-					//TODO CHECK THE getVertex(str)
-					System.out.println(Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), ViewType.PRECEDENCE_VIEW));
+					v1 = graph.getVertex(str1);
+					if (v1 == null ) {
+						System.err.println("The city "+str1+" doesn't exist");
+					} else {
+						System.out.println(Dijkstra.getInstance().shortestPath(graph, v1, ViewType.PRECEDENCE_VIEW));
+					}
 					break;
 				case 10:
 					System.err.println("Ville d'origine:");
@@ -127,8 +130,14 @@ public class Main {
 					str2 = in.next();
 					System.err.print("Distance: ");
 					// Output "inf" instead of Integer.MAX_VALUE
-					p = Dijkstra.getInstance().shortestPath(graph, graph.getVertex(str1), graph.getVertex(str2));
-					System.out.println(p.getCost());
+					v1 = graph.getVertex(str1);
+					v2 = graph.getVertex(str2);
+					if (v1 == null || v2 == null) {
+						System.err.println("One or both of the cities don't exist");
+					} else {
+						p = Dijkstra.getInstance().shortestPath(graph, v1, v2);
+						System.out.println(p.getCost());
+					}
 					break;
 				case 11:
 					System.err.println("Ville d'origine:");
@@ -207,6 +216,24 @@ public class Main {
 						}
 					});
 					break;
+				case 19:
+					System.err.println("Ville d'origine:");
+					str1 = in.next();
+					System.err.println("Ville de destination:");
+					str2 = in.next();
+					v1 = graph.getVertex(str1);
+					v2 = graph.getVertex(str2);
+					if (v1 == null || v2 == null) {
+						System.err.println("One or both of the cities don't exist");
+					} else {
+						try {
+							p = AntsSolver.getInstance().shortestPath(graph, v1, v2);
+							System.out.println("Cout: "+p.getCost());
+							System.out.println(p);
+						}catch (NullPointerException e){
+							System.err.println("No path found");
+						}
+					}
 			}
 		} while (choix != 0);
 	}
