@@ -2,16 +2,18 @@ package ch.hepia.it.cffPathFinder.backend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AntsSolver implements PathFinder {
 	private static AntsSolver instance = new AntsSolver();
-	private static final int ANTS_COUNT = 100;
-	private static final int STEP_COUNT = 1000000;
-	private static final double ALPHA = 2;
-	private static final double BETA = 0;
+	private static final int ANTS_COUNT = 1000;
+	private static final int STEP_COUNT = 2000;
+	private static final double ALPHA = 1;
+	private static final double BETA = 1;
 	private static final double Q = 1;
 
 	private AntsSolver() {
@@ -38,6 +40,11 @@ public class AntsSolver implements PathFinder {
 		for (int i = 0; i < STEP_COUNT; i++) {
 			for (Ant ant : ants) {
 				ant.update(g, pheromoneTrail);
+				/*
+				for (Edge edge : g.getEdges()) {
+					pheromoneTrail.put(edge, Math.max(pheromoneTrail.get(edge) - 1f, 1));
+				}
+				*/
 			}
 		}
 		Vertex c = v1;
@@ -52,7 +59,15 @@ public class AntsSolver implements PathFinder {
 					maxp = pheromoneTrail.get(e);
 				}
 			}
-			p.setCost(p.getCost()+m.getCost());
+			if (m == null) {
+				for (Edge e : edges) {
+					if (pheromoneTrail.get(e) > maxp) {
+						m = e;
+						maxp = pheromoneTrail.get(e);
+					}
+				}
+			}
+			p.setCost(p.getCost() + m.getCost());
 			c = m.getOtherVertex(c);
 		}
 		p.insertAtEnd(v2);
@@ -60,77 +75,50 @@ public class AntsSolver implements PathFinder {
 	}
 
 	@Override
-	public String shortestPath (Graph g, Vertex v1, ViewType viewType) {
+	public String shortestPath(Graph g, Vertex v1, ViewType viewType) {
 		return null;
 	}
 
 	private class Ant {
 		private List<Edge> path;
 		private Vertex currentVertex;
-		private Edge currentEdge;
-		private int edgeProgress;
 		private boolean arrived;
 		private final Vertex start, goal;
 
 		private List<Vertex> visited;
+		private Set<Edge> pheromoned;
 
 		public Ant(Vertex v1, Vertex goal) {
 			this.currentVertex = v1;
 			this.path = new ArrayList<>();
 			this.arrived = false;
-			this.edgeProgress = 0;
 			this.goal = goal;
 			this.start = v1;
-
 			this.visited = new ArrayList<>();
 			this.visited.add(start);
+			this.pheromoned = new HashSet<>();
 		}
 
 		public void update(Graph g, Map<Edge, Float> ph) {
 			// ant blind progress
 			if (!arrived) {
-				// if no edge is being traveled
-				if (currentEdge == null) {
-					currentEdge = chooseEdge(g, ph);
-					path.add(currentEdge);
-					edgeProgress = 1;
-				} else {
-					// if the ant isn't at the end of the edge yet
-					if (edgeProgress < currentEdge.getCost()) {
-						edgeProgress++;
-						// if the ant is at the next vertex
-					} else {
-						currentVertex = currentEdge.getOtherVertex(currentVertex);
-						this.visited.add(currentVertex);
-						// System.out.println(((Stop)currentVertex).getName());
-						currentEdge = null;
-						edgeProgress = 0;
-						if (currentVertex == goal) {
-							arrived = true;
-						}
-					}
+				Edge e = chooseEdge(g, ph);
+				path.add(e);
+				currentVertex = e.getOtherVertex(currentVertex);
+				if (currentVertex == goal) {
+					arrived = true;
 				}
-				// ant return path
-			} else {
-				if (currentEdge == null) {
-					edgeProgress = 1;
-					currentEdge = path.remove(path.size() - 1);
-				} else {
-					// if the ant isn't at the end of the edge yet
-					if (edgeProgress < currentEdge.getCost()) {
-						edgeProgress++;
-						// if the ant is at the next vertex
-					} else {
-						currentVertex = currentEdge.getOtherVertex(currentVertex);
-						ph.put(currentEdge, (float) (ph.get(currentEdge) + Q ));
-						currentEdge = null;
-						edgeProgress = 0;
-						if (currentVertex == start) {
-							arrived = false;
-							path.clear();
-							this.visited.clear();
-						}
-					}
+			} else if (arrived) {
+				Edge e = path.remove(path.size() - 1);
+				if (!pheromoned.contains(e)) {
+					ph.put(e, (float) (ph.get(e) + Q / e.getCost()));
+					pheromoned.add(e);
+				}
+				currentVertex = e.getOtherVertex(currentVertex);
+				if (currentVertex == start) {
+					arrived = false;
+					path.clear();
+					pheromoned.clear();
 				}
 			}
 		}
@@ -146,7 +134,8 @@ public class AntsSolver implements PathFinder {
 					}
 				}
 			}
-			if(edges.size() == 0) {
+
+			if (edges.size() == 0) {
 				edges = g.edgesFromVertex(currentVertex);
 			}
 

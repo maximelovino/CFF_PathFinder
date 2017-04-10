@@ -241,6 +241,7 @@ public class MapView extends JFrame {
 			Graphics2D g = (Graphics2D) g1;
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			Float[] p0 = points.get(0);
+			g.setColor(Color.black);
 			for (int i = 1; i < points.size() + 1; i++) {
 				g.drawLine((int) (p0[0] * this.getWidth()), (int) (this.getHeight() - p0[1] * this.getHeight()), (int) (points.get(i % points.size())[0] * this.getWidth()), (int) (this.getHeight() - points.get(i % points.size())[1] * this.getHeight()));
 				p0 = points.get(i % points.size());
@@ -248,10 +249,12 @@ public class MapView extends JFrame {
 
 			for (Vertex v : graph.getVertices()) {
 				Stop s = (Stop) v;
+				g.setColor(Color.BLUE);
 				g.fillOval((int) (s.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s.getyCoord() * this.getHeight()) - 10, 20, 20);
+				g.setColor(Color.BLACK);
 				g.drawString(s.getName(), (int) (s.getxCoord() * this.getWidth()) - 10, (int) (this.getHeight() - s.getyCoord() * this.getHeight()) - 10);
 			}
-
+			g.setColor(Color.BLUE);
 			for (Edge e : graph.getEdges()) {
 				Stop s1 = (Stop) e.getV1();
 				Stop s2 = (Stop) e.getV2();
